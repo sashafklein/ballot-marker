@@ -21,6 +21,7 @@
   "rules": {
     "arrow-body-style": 0,
     "arrow-parens": [2, "always"],
+    "comma-dangle": [0],
     "import/extensions": 0,
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 0,

@@ -1,17 +1,13 @@
 {
-  "name": "react-native-redux-starter-kit",
+  "name": "ballot-marker",
   "version": "2.0.0",
-  "description": "Get started with React Native and Redux.",
+  "description": "Ballot marking tool.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LeoLeBras/react-native-redux-starter-kit"
+    "url": "https://github.com/sashafklein/ballot"
   },
-  "author": "Léo LE BRAS <leo.lebrasf@gmail.com> (http://github.com/LeoLeBras)",
-  "contributors": "Charles MANGWA <charles.mangwa@gmail.com> (http://github.com/CharlesMangwa)",
+  "author": "Sasha Klein <sashafklein@gmail.com> (http://github.com/sashafklein)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/LeoLeBras/react-native-redux-starter-kit/issues"
-  },
   "scripts": {
     "start": "node_modules/react-native/packager/packager.sh",
     "build-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.ios.js --bundle-output iOS/main.jsbundle --platform 'ios' --assets-dest ./  --dev false --reset-cache",
