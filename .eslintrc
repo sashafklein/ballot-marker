@@ -31,6 +31,6 @@
     "radix": ["error", "as-needed"],
     "react/jsx-filename-extension": 0,
     "react/sort-comp": 0,
-    "semi": [2, "never"]
+    "semi": [2, "always"]
   }
 }

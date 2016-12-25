@@ -1,25 +1,12 @@
-/* @flow */
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import Instructions from '@Instructions/components/Instructions';
+import connect from './connect';
 
-import React, { Component } from 'react'
-import Instructions from '@Instructions/components/Instructions'
-import connect from './connect'
+const InstructionsContainer = () => (
+  <View>
+    <Instructions/>
+  </View>
+);
 
-type Props = {
-}
-
-class InstructionsContainer extends Component {
-
-  props: Props
-
-  render() {
-    return (
-      <Instructions
-      />
-    )
-  }
-
-}
-
-export default connect(InstructionsContainer)
-
-
+export default connect(InstructionsContainer);

@@ -15,6 +15,9 @@ const LaunchScene = () => {
       <Link onPress={Actions.counter}>
         Go to counter
       </Link>
+      <Link onPress={Actions.instructions}>
+        Go to instructions
+      </Link>
     </View>
   )
 }

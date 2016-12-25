@@ -1,20 +1,17 @@
-/* @flow */
+import React from 'react';
+import { Text, View } from 'react-native';
+import styles from './styles';
+import data from '@data/sample';
 
-import React from 'react'
-import { Button, Text, View } from 'react-native'
-import styles from './styles'
+const Instructions = () => {
+  const d = data
+  debugger
 
-type Props = {
-}
-
-const Instructions = (props: Props): React<any> => {
   return (
-  )
-}
+    <View>
+      <Text>Instrucsh</Text>
+    </View>
+  );
+};
 
-Instructions.defaultProps = {
-}
-
-export default Instructions
-
-
+export default Instructions;
