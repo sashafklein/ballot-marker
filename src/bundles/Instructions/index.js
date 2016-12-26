@@ -3,8 +3,8 @@ import { Text, View } from 'react-native';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import gbs from '@shared/theme';
-import PageWithActions from '@shared/components/PageWithActions';
+import gbs from '@styles';
+import PageWithActions from '@components/PageWithActions';
 import { isDateElement } from '@utils/date';
 import { getTitle } from './helpers';
 

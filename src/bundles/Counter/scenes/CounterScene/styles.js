@@ -1,7 +1,7 @@
 /* @flow */
 
 import { StyleSheet } from 'react-native'
-import { DEFAULT_BACKGROUND_COLOR } from '@theme/colors'
+import { DEFAULT_BACKGROUND_COLOR } from '@styles/colors'
 
 const styles = StyleSheet.create({
   container: {

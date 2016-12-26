@@ -1,6 +1,6 @@
 import React from 'react';
 
-import gbs from '@shared/theme';
+import gbs from '@styles';
 import { styleCombiner } from '@utils/styles';
 
 import Link from './Link';

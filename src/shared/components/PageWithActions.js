@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import gbs from '@shared/theme';
+import gbs from '@styles';
 import Button from './Button';
 
 const PageWithActions = ({ onNext, onBack, children, back, next }) => {

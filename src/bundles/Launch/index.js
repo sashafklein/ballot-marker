@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Link from '@components/Link';
-import gbs from '@shared/theme';
+import gbs from '@styles';
 
 const Launch = () => {
   return (
