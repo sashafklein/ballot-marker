@@ -8,6 +8,13 @@ Additional docs will be added on the following topics:
 - [Style patterns](docs/styles.md)
 - [Redux patterns](docs/redux.md)
 
+## Getting started
+
+```
+npm install // install dependencies
+react-native run-ios // run ios simulator
+```
+
 ## App Structure
 
 ### General notes
