@@ -1,16 +1,8 @@
-/* @flow */
-
 import React from 'react'
 import { Button, Text, View } from 'react-native'
 import styles from './styles'
 
-type Props = {
-  decrement: Function,
-  increment: Function,
-  value: number,
-}
-
-const Counter = (props: Props): React$Element<any> => {
+const Counter = (props) => {
   const { decrement, increment, value } = props
   return (
     <View style={styles.container}>
