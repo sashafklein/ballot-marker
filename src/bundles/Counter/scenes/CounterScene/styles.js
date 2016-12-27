@@ -1,7 +1,5 @@
-/* @flow */
-
-import { StyleSheet } from 'react-native'
-import { DEFAULT_BACKGROUND_COLOR } from '@styles/colors'
+import { StyleSheet } from 'react-native';
+import { DEFAULT_BACKGROUND_COLOR } from '@styles/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,6 +8,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: DEFAULT_BACKGROUND_COLOR,
   },
-})
+});
 
-export default styles
+export default styles;

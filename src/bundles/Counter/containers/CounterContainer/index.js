@@ -1,29 +1,20 @@
-/* @flow */
+import React from 'react';
+import Counter from '@Counter/components/Counter';
+import connect from './connect';
 
-import React, { Component } from 'react'
-import Counter from '@Counter/components/Counter'
-import connect from './connect'
+const CounterContainer = props => (
+  <Counter
+    value={props.counter}
+    decrement={props.decrement}
+    increment={props.increment}
+  />
+);
 
-type Props = {
+const { number, func } = React.PropTypes;
+CounterContainer.propTypes = {
   counter: number,
-  increment: Function,
-  decrement: Function,
-}
+  decrement: func,
+  increment: func
+};
 
-class CounterContainer extends Component {
-
-  props: Props
-
-  render() {
-    return (
-      <Counter
-        value={this.props.counter}
-        decrement={this.props.decrement}
-        increment={this.props.increment}
-      />
-    )
-  }
-
-}
-
-export default connect(CounterContainer)
+export default connect(CounterContainer);

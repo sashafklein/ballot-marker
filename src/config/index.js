@@ -1,3 +1,1 @@
-/* @flow */
-
-export const API = 'https://github.com'
+export const API = 'https://github.com';

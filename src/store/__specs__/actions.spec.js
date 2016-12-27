@@ -37,7 +37,7 @@ describe('Redux actions', () => {
           if (response[argumentName] === args[i]) {
             // pass
           } else {
-            assert.fail(0, 1, `Expected response[${argumentName}] to equal ${args[i]}.\nResponse was:\n  ${JSON.stringify(response)}`);
+            assert.fail(0, 1, `\nExpected the argument '${argumentName}' to be associated with a key of the same name.\nReturned object:\n  ${JSON.stringify(response)}`);
           }
           expect(response[argumentName]).to.eq(args[i]);
         }

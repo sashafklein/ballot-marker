@@ -1,20 +1,23 @@
-var fs = require('fs')
-var path = require('path')
-var babel = require('babel-core')
-var origJs = require.extensions['.js']
+/* eslint no-underscore-dangle:0 */
 
-require.extensions['.js'] = function (module, fileName) {
-  var output
+import fs from 'fs';
+import path from 'path';
+import babel from 'babel-core';
+
+const origJs = require.extensions['.js'];
+
+require.extensions['.js'] = (module, fileName) => {
+  let newFileName = fileName;
   if (fileName.indexOf('node_modules/react-native/Libraries/react-native/react-native.js') >= 0) {
-    fileName = path.resolve('./test/mocks/react-native.js')
+    newFileName = path.resolve('./test/mocks/react-native.js');
   }
-  if (fileName.indexOf('node_modules/') >= 0) {
-    return (origJs || require.extensions['.js'])(module, fileName)
+  if (newFileName.indexOf('node_modules/') >= 0) {
+    return (origJs || require.extensions['.js'])(module, newFileName);
   }
-  var src = fs.readFileSync(fileName, 'utf8')
-  output = babel.transform(src, {
-    filename: fileName
-  }).code
+  const src = fs.readFileSync(newFileName, 'utf8');
+  const output = babel.transform(src, {
+    filename: newFileName
+  }).code;
 
-  return module._compile(output, fileName)
-}
+  return module._compile(output, newFileName);
+};

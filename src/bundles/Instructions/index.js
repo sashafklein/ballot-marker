@@ -10,10 +10,10 @@ import { getTitle } from './helpers';
 
 export const Instructions = ({ type, fullTitle }) => {
   // Date of election doesn't seem to be provided in data?
-  const date = fullTitle.split(' ').filter((el) => isDateElement(el)).join(' ');
+  const date = fullTitle.split(' ').filter(el => isDateElement(el)).join(' ');
 
   return (
-    <PageWithActions onNext={ () => console.log('next') } back="Back" onBack={ () => {} }>
+    <PageWithActions onNext={ () => {} } back="Back" onBack={ () => {} }>
       <View style={ [gbs.l.centeredContainer] }>
         <Text style={ [gbs.t.h1, gbs.l.h1, gbs.w.mb10, { color: gbs.c.black } ]}>
           Official Ballot
@@ -35,7 +35,7 @@ Instructions.propTypes = {
   fullTitle: string.isRequired,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   type: state.data.getIn(['Election', 'Type']),
   fullTitle: state.data.getIn(['Election', 'Name', 'Text', '__text']),
 });

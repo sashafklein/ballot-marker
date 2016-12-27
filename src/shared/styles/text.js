@@ -1,7 +1,7 @@
 
 // Takes a iPhone-5 friendly value, and resizes it
 // for the current screen
-const scaleText = (value) => value;
+const scaleText = value => value;
 
 export default {
   h1: {

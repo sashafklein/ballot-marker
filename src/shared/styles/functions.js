@@ -1,3 +1,3 @@
 export default {
-  percent: (number) => 50
+  percent: () => 50
 };

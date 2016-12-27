@@ -1,4 +1,4 @@
-export const getTitle = (type) => {
+export const getTitle = type => {
   switch (type) {
     case 'general': {
       return 'General Election';

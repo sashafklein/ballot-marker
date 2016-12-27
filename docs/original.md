@@ -104,8 +104,6 @@ We're actually using [`react-native-router-flux`](https://github.com/aksonov/rea
 The router is set up in `src/core/scenes.js` so this is where you'll define the different routes of your app. For instance:
 
 ```js
-/* @flow */
-
 import React from 'react'
 import { Actions, Scene } from 'react-native-router-flux'
 import { LaunchScene } from '@Launch/scenes'
@@ -126,8 +124,6 @@ Thus, feel free to make any modification you'd like in this file.
 It sometimes happens that you wish to use some links to manage… well: the navigation 😁! You just have to use `Actions` from `react-native-router-flux` with the `key` string you defined into your `scenes.js` file:
 
 ```js
-/* @flow */
-
 import React from 'react'
 import { View, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'

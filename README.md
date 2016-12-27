@@ -2,7 +2,9 @@
 
 This repo was built off a clone of the [react-native-redux-starter-kit](https://github.com/LeoLeBras/react-native-redux-starter-kit). For more info on the structure and tools includes, check out that site and [the original docs][docs/original.md] stored in this repo.
 
-Additional docs will be added on the following topics:
+Briefly, this is a ReactNative app, which is written in JavaScript (ES6) and compiled into native iOS and Android code on command. It uses Redux for storing state information, and Mocha and Chai for testing. Unlike the above starter app, this app does *not* have type checking.
+
+Additional docs on the following topic have been broken out:
 
 - [Testing](docs/testing.md)
 - [Style patterns](docs/styles.md)
@@ -11,7 +13,7 @@ Additional docs will be added on the following topics:
 ## Getting started
 
 ```
-npm install // install dependencies
+yarn install // or `npm install` - install dependencies
 react-native run-ios // run ios simulator
 ```
 

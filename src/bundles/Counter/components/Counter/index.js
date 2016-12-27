@@ -1,9 +1,9 @@
-import React from 'react'
-import { Button, Text, View } from 'react-native'
-import styles from './styles'
+import React from 'react';
+import { Button, Text, View } from 'react-native';
+import styles from './styles';
 
-const Counter = (props) => {
-  const { decrement, increment, value } = props
+const Counter = props => {
+  const { decrement, increment, value } = props;
   return (
     <View style={styles.container}>
       <Button
@@ -18,11 +18,18 @@ const Counter = (props) => {
         accessibilityLabel="Increase counter value"
       />
     </View>
-  )
-}
+  );
+};
+
+const { number, func } = React.PropTypes;
+Counter.propTypes = {
+  value: number,
+  increment: func,
+  decrement: func
+};
 
 Counter.defaultProps = {
   value: 0,
-}
+};
 
-export default Counter
+export default Counter;
