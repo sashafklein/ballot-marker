@@ -1,10 +1,10 @@
 # Ballot Marker
 
-This repo was built off a clone of the [react-native-redux-starter-kit](https://github.com/LeoLeBras/react-native-redux-starter-kit). For more info on the structure and tools includes, check out that site and [the original docs][docs/original.md] stored in this repo.
+This repo was built off a clone of the [react-native-redux-starter-kit](https://github.com/LeoLeBras/react-native-redux-starter-kit). For more info on the structure and tools included, check out that site and [the original docs](docs/original.md) stored in this repo.
 
-Briefly, this is a ReactNative app, which is written in JavaScript (ES6) and compiled into native iOS and Android code on command. It uses Redux for storing state information, and Mocha and Chai for testing. Unlike the above starter app, this app does *not* have type checking.
+Briefly, this is a ReactNative app, which is written in JavaScript (ES6) and compiled into native iOS and Android. It uses Redux for storing state information, and Mocha and Chai for testing. Unlike the above starter app, this app does *not* have type checking.
 
-Additional docs on the following topic have been broken out:
+Additional docs on the following topics have been broken out in the `docs` directory:
 
 - [Testing](docs/testing.md)
 - [Style patterns](docs/styles.md)
@@ -21,11 +21,21 @@ react-native run-ios // run ios simulator
 
 ### General notes
 
-Throughout the app, there are `package.json` files that contain only one key -- `"name"` -- and a value like `"@shared"`. These files essentially create shortcuts for importing, which allow for importing of files in the `shared` directory without reference to the location of the `shared` or the current directory. In other words, this will import the `base.js` file in the `src/shared` directory from anywhere (given a correct `package.json`):
+Throughout the app, there are `package.json` files that look like the below:
+
+```
+{
+  "name": "@shared"
+}
+```
+
+These files essentially create shortcuts which allow for importing of files in (for example) the `shared` directory without reference to the relative location of either the target or the current directory. In other words, this will import the `base.js` file in the `src/shared` directory from anywhere (given a correct `package.json`):
 
 ```
 import '@shared/base';
 ```
+
+> Note: Tests do not currently allow for this sort of import.
 
 Like any React Native app, this app is broken into `src`, `ios`, and `android` directories. The JavaScript code is by and large contained within `src`. It compiles into native code in the `ios` and `android` directories.
 
@@ -38,6 +48,8 @@ Main pages can be found in the `src/bundles` directory. Each sub-folder is for a
 > Every component folder should be flat *except for* the test folder, `__specs__`, which contains tests specific to that component and its helper functions. Tests are described in greater detail below.
 
 Component-specific helpers should stay within the specific `src/bundles/` directory. Generalizable helpers belong in `shared/utils`.
+
+> To generate a skeleton "bundle", with associated specs, run `ruby makeBundle.rb ComponentName`. This will take care of boilerplate component scaffolding.
 
 ### Core
 
