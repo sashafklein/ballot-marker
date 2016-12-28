@@ -9,16 +9,14 @@ const Button = ({ onPress, children, replaceStyles, addStyles }) => {
   const defaultStyles = {
     button: {
       backgroundColor: gbs.c.black,
-      flex: 1,
       flexDirection: 'row',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     text: {
       color: gbs.c.white,
-      paddingHorizontal: 20,
-      paddingVertical: 5,
       alignSelf: 'center',
-      fontSize: gbs.t.h2.fontSize
+      fontSize: gbs.t.h3.fontSize,
     }
   };
 
@@ -26,6 +24,7 @@ const Button = ({ onPress, children, replaceStyles, addStyles }) => {
   return (
     <Link
       onPress={ onPress }
+      activeOpacity={ 0.8 }
       replaceStyles={ {
         link: combiner('button'),
         text: combiner('text')

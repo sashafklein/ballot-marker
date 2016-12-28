@@ -5,69 +5,44 @@ import gbs from '../styles';
 import Button from './Button';
 
 export const PageWithActions = ({ onNext, onBack, children, back, next }) => {
-  const style = {
-    bottomBar: {
-      backgroundColor: gbs.c.black
-    },
-    bottomBarInner: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignSelf: 'center'
-    },
-    next: {
-      alignSelf: 'flex-end',
-      backgroundColor: 'rgb(0, 151, 84)',
-      height: gbs.f.percent(10)
-    },
-    back: {
-      alignSelf: 'flex-end',
-      backgroundColor: 'rgb(208, 58, 69)',
-      height: gbs.f.percent(10)
-    },
-    nextDisabled: {
-      backgroundColor: 'rgba(0, 151, 84, 0.2)'
-    },
-    backDisabled: {
-      backgroundColor: 'rgba(208, 58, 69, 0.2)'
-    }
-  };
 
+  const button = (onPress, text, colorKey) => (
+    text && <Button
+      onPress={ onPress || (() => {}) }
+      replaceStyles={ {
+        button: [
+          {
+            height: gbs.s.percHeight10,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          },
+          { backgroundColor: gbs.c[colorKey] },
+          onPress ? {} : { backgroundColor: gbs.f.setRGBOpacity(gbs.c[colorKey], 0.4) }
+        ]
+      } }
+    >
+      { text }
+    </Button>
+  );
 
   return (
     <View style={ { flex: 1 } }>
-      { children }
-      <View style={ style.bottomBar }>
-        <View style={ style.bottomBarInner }>
-          {
-            back &&
-            <Button
-              onPress={ onBack || (() => {}) }
-              addStyles={ {
-                button: [style.back, onBack ? {} : style.backDisabled]
-              } }
-            >
-              { back }
-            </Button>
-          }
-          <Button
-            onPress={ onNext || (() => {}) }
-            addStyles={ {
-              button: [style.next, onNext ? {} : style.nextDisabled ]
-            } }
-          >
-            { next }
-          </Button>
-        </View>
+      <View style={ { height: gbs.s.percHeight90 } }>
+        { children }
+      </View>
+      <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', height: gbs.s.percHeight10 } }>
+        { button(onBack, back, 'red') }
+        { button(onNext, next, 'green') }
       </View>
     </View>
   );
 };
 
-const { element, func, string } = React.PropTypes;
+const { element, func, string, oneOfType, array } = React.PropTypes;
 PageWithActions.propTypes = {
-  children: element.isRequired,
-  onNext: func.isRequired,
+  children: oneOfType([element, array]).isRequired,
+  onNext: func,
   onBack: func,
   next: string,
   back: string
@@ -76,4 +51,5 @@ PageWithActions.propTypes = {
 PageWithActions.defaultProps = {
   next: 'Next'
 };
+
 export default PageWithActions;

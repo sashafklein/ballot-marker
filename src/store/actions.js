@@ -5,3 +5,7 @@ export const decrement = () => ({
 export const increment = () => ({
   type: 'INCREMENT',
 });
+
+export const changeSetting = (setting, value) => ({
+  type: 'CHANGE_SETTING', setting, value
+});

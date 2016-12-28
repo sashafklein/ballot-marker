@@ -1,5 +1,5 @@
-export default function promiseMiddleware(): Function {
-  return (next: Function) => (action: Object): Promise<Object> => {
+export default function promiseMiddleware() {
+  return next => action => {
     const { promise, types, ...rest } = action;
     if (!promise) return next(action);
     const [REQUEST, SUCCESS, ERROR] = types;

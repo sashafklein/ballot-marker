@@ -22,24 +22,31 @@ const styles = {
   }
 };
 
-const Link = ({ onPress, children = '', addStyles, replaceStyles }) => {
+const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacity }) => {
   const combiner = styleCombiner(styles, addStyles, replaceStyles);
   return (
     <TouchableOpacity
       onPress={ onPress }
       style={ combiner('link') }
+      activeOpacity={ activeOpacity }
     >
       <Text style={ combiner('text') }>{children}</Text>
     </TouchableOpacity>
   );
 };
 
-const { func, string, object, oneOfType, array } = React.PropTypes;
+const { func, string, object, oneOfType, array, number } = React.PropTypes;
 Link.propTypes = {
   onPress: func,
   children: string,
   addStyles: oneOfType([object, array]),
-  replaceStyles: oneOfType([object, array])
+  replaceStyles: oneOfType([object, array]),
+  activeOpacity: number
+};
+
+Link.defaultProps = {
+  children: '',
+  activeOpacity: 0.2
 };
 
 export default Link;
