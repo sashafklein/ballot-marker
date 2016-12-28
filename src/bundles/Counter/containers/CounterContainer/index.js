@@ -1,5 +1,5 @@
 import React from 'react';
-import Counter from '@Counter/components/Counter';
+import Counter from '../../components/Counter';
 import connect from './connect';
 
 const CounterContainer = props => (

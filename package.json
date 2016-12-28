@@ -13,9 +13,10 @@
     "build-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.ios.js --bundle-output iOS/main.jsbundle --platform 'ios' --assets-dest ./  --dev false --reset-cache",
     "build-android": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.android.js --bundle-output iOS/main.jsbundle --platform 'android' --assets-dest ./  --dev false --reset-cache",
     "reactotron": "node_modules/.bin/reactotron",
-    "test": "mocha --opts test/mocha.opts 'src/**/__specs__/*.spec.js'",
+    "test": "mocha --opts test/mocha.opts --require react-native-mock/mock 'src/**/__specs__/*.spec.js'",
     "lint": "eslint .",
-    "lintfix": "eslint . --fix"
+    "lintfix": "eslint . --fix",
+    "ios": "react-native run-ios"
   },
   "engines": {
     "node": ">=4",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "apisauce": "^0.7.0",
+    "babel": "^6.5.2",
     "babel-preset-es2015": "^6.18.0",
     "immutable": "^3.8.1",
     "lodash": "^4.17.3",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "babel-preset-react-native": "^1.9.1",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "chai": "^3.5.0",
     "enzyme": "^2.7.0",
@@ -50,6 +53,7 @@
     "react": "^15.4.1",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
+    "react-native-mock": "^0.2.9",
     "reactotron": "^0.9.0",
     "sinon": "^1.17.6"
   }

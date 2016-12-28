@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { decrement, increment } from '@store/modules/counter';
+import { decrement, increment } from '../../../../store/modules/counter';
 
 const mapStateToProps = state => ({
   counter: state.counter,

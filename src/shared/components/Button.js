@@ -1,7 +1,7 @@
 import React from 'react';
 
-import gbs from '@styles';
-import { styleCombiner } from '@utils/styles';
+import gbs from '../styles';
+import { styleCombiner } from '../utils/styles';
 
 import Link from './Link';
 

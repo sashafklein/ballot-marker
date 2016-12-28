@@ -1,4 +1,4 @@
-
+require('babel-plugin-module-alias');
 
 const chai = require('chai');
 

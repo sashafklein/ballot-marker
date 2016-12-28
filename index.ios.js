@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import Kernel from '@core';
+import Kernel from './src/core';
 
 AppRegistry.registerComponent('App', () => Kernel);

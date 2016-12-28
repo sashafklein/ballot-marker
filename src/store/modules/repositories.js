@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import WebAPI from '@api';
+import WebAPI from '../../api';
 
 export const REPOSITORIES_FETCH_REQUESTED = 'REPOSITORIES_FETCH_REQUESTED';
 export const REPOSITORIES_FETCH_SUCCEEDED = 'REPOSITORIES_FETCH_SUCCEEDED';

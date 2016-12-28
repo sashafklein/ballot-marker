@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import gbs from '@styles';
+import gbs from '../styles';
 import Button from './Button';
 
-const PageWithActions = ({ onNext, onBack, children, back, next }) => {
+export const PageWithActions = ({ onNext, onBack, children, back, next }) => {
   const style = {
     bottomBar: {
       backgroundColor: gbs.c.black

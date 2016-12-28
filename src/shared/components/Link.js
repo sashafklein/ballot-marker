@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 
-import gbs from '@styles';
-import { styleCombiner } from '@utils/styles';
+import gbs from '../styles';
+import { styleCombiner } from '../utils/styles';
 
 const styles = {
   text: {

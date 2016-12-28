@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import CounterContainer from '@Counter/containers/CounterContainer';
+import CounterContainer from '../../containers/CounterContainer';
 import styles from './styles';
 
 const CounterScene = () => {

@@ -21,7 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-
+npm-debug.log.*
 # Android/IJ
 #
 .idea
@@ -31,7 +31,7 @@ local.properties
 # node.js
 #
 node_modules/
-npm-debug.log
+npm-debug.log.*
 
 # BUCK
 buck-out/

@@ -2,7 +2,7 @@ bundle = ARGV[0]
 
 raise "No bundle name provided!" unless bundle && bundle.length > 0
 
-base = 'src/bundles/#{bundle}'
+base = "src/bundles/#{bundle}"
 
 `mkdir #{base}`
 `mkdir #{base}/__specs__`
@@ -13,44 +13,39 @@ base = 'src/bundles/#{bundle}'
 index = %Q(import React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-
-const mapStateToProps = (state) => ({
-  data: state.data,
-})
+import { View } from 'react-native';
 
 // Export an unconnected version for testing
-export const #{bundle} = (props) => {
-  return (
-
-  );
-};
+export const #{bundle} = () => (
+  <View />
+);
 
 const { func } = React.PropTypes;
 #{bundle}.propTypes = {
   dispatch: func
 };
 
-export default => compose(
-  connect(mapStateToProps)
-)(#{package});
+const mapStateToProps = () => ({});
 
-)
+export default compose(connect(mapStateToProps))(#{bundle});)
 
 spec = %Q(/* eslint no-undef:0 */
 
-import #{package} from '@#{package}';
+import React from 'react';
+import { shallow } from 'enzyme';
+import { spy } from 'sinon';
 
-describe('<#{package} />', () => {
+import { #{bundle} } from '../index.js';
+
+describe('<#{bundle} />', () => {
   it('has a test', () => {
     expect(true).to.eq(false);
   });
-});
+});)
 
-)
-
-package = %Q({
-  \"name\": \"@#{bundle}\"
-})
+package = '{\n\t\"name\": \"@'
+package += "#{bundle}"
+package += '\"\n}'
 
 `echo "#{index}" > #{base}/index.js`
 `echo "#{spec}" > #{base}/__specs__/index.spec.js`
