@@ -10,7 +10,7 @@ import LanguageList from './LanguageList';
 
 // Export an unconnected version for testing
 export const Language = () => (
-  <PageWithActions onBack={ Actions.pop }>
+  <PageWithActions onBack={ Actions.pop } onNext={ Actions.textSize }>
     <View style={ [gbs.l.centeredContainer, gbs.w.mh0] }>
       <Text style={ gbs.t.p }>Set your language:</Text>
       <View style={ gbs.w.mt50 } >

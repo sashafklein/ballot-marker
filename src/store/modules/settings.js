@@ -1,6 +1,11 @@
 import Immutable from 'immutable';
 
-export default (state = Immutable.fromJS({}), action = {}) => {
+const seedSettings = {
+  textSize: 'small',
+  colorScheme: 'black'
+};
+
+export default (state = Immutable.fromJS(seedSettings), action = {}) => {
   switch (action.type) {
     case 'CHANGE_SETTING': {
       return state.merge({ [action.setting]: action.value });
