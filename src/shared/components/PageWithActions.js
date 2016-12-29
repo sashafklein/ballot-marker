@@ -1,10 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import gbs from '../styles';
 import Button from './Button';
 
-export const PageWithActions = ({ onNext, onBack, children, back, next }) => {
+export const PageWithActions = props => {
+  const { onNext, onBack, children, back, next } = props;
 
   const button = (onPress, text, colorKey) => (
     text && <Button
@@ -18,7 +21,7 @@ export const PageWithActions = ({ onNext, onBack, children, back, next }) => {
             flex: 1,
           },
           { backgroundColor: gbs.c[colorKey] },
-          onPress ? {} : { backgroundColor: gbs.f.setRGBOpacity(gbs.c[colorKey], 0.4) }
+          onPress ? {} : { backgroundColor: gbs.c.lightGrey }
         ]
       } }
     >
@@ -49,7 +52,10 @@ PageWithActions.propTypes = {
 };
 
 PageWithActions.defaultProps = {
-  next: 'Next'
+  next: 'Next',
+  back: 'Back'
 };
 
-export default PageWithActions;
+const mapStateToProps = () => ({});
+
+export default compose(connect(mapStateToProps))(PageWithActions);

@@ -2,11 +2,11 @@
 
 import { Text } from 'react-native';
 
-import { Instructions } from '../index.js';
+import { Launch } from '../index.js';
 
-describe('<Instructions />', () => {
+describe('<Launch />', () => {
   it('renders appropriate HTML', () => {
-    const comp = mockComp(Instructions, { type: 'general', fullTitle: 'December 24, 2016 General Election' });
+    const comp = mockComp(Launch, { type: 'general', fullTitle: 'December 24, 2016 General Election' });
     const text = comp.find(Text);
 
     const title = text.get(1);

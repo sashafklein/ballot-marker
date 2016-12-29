@@ -5,13 +5,13 @@ import { Actions } from 'react-native-router-flux';
 import { Text, View } from 'react-native';
 
 import { changeSetting } from '../../store/actions';
-import { PageWithActions } from '../../shared/components/PageWithActions';
+import PageWithActions from '../../shared/components/PageWithActions';
 import Button from '../../shared/components/Button';
 import gbs from '../../shared/styles';
 
 // Export an unconnected version for testing
 export const Headset = ({ dispatch, screenOff }) => (
-  <PageWithActions back="Back" onNext={ Actions.language } onBack={ Actions.instructions }>
+  <PageWithActions onNext={ Actions.language } onBack={ Actions.pop }>
     <View style={ [gbs.l.centeredContainer] }>
       <Text style={ gbs.w.mb20 }>
         <Text style={ [gbs.t.p, gbs.t.bold] }>If you want to hear the ballot out loud, </Text>

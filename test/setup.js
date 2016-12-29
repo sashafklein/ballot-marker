@@ -10,7 +10,7 @@ const shallow = enzyme.shallow;
 global.expect = chai.expect;
 global.assert = chai.assert;
 
-global.mockComp = (Comp, props) => shallow(<Comp { ...props} />);
+global.mockComp = (Comp, props = {}) => shallow(<Comp { ...props} />);
 
 mockery.enable({
   warnOnReplace: false,

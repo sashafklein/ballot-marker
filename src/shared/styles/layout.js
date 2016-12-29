@@ -9,7 +9,10 @@ export default {
   },
   button: {
     height: 50,
-    width: 150,
+    width: size.percWidth70,
     marginVertical: 20
-  }
+  },
+  p: {
+    marginVertical: 10
+  },
 };
