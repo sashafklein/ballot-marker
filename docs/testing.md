@@ -1,7 +1,7 @@
 # Testing Patterns
 
 - [Testing tools](#tools)
-- [What we test](#what-we-test)
+- [Test types](#test-types)
   + [Unit tests](#unit-tests)
   + [Component tests](#component-tests)
   + [API tests](#api-tests)

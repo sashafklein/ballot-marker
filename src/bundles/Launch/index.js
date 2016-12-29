@@ -38,7 +38,7 @@ const { string } = React.PropTypes;
 Launch.propTypes = {
   type: string.isRequired,
   fullTitle: string.isRequired,
-  textSize: string.isRequired
+  textSize: string
 };
 
 const mapStateToProps = state => ({

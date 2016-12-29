@@ -15,7 +15,7 @@ export const styleCombiner = (base = {}, add = {}, replace = {}) => {
     stitchStyles([base[key], add[key]]));
 };
 
-// Takes the (redux-stored) text-size argument and applies it to global text sizes
+// Takes the (redux-stored) textSize argument and applies it to global text sizes
 export const transformFontSizes = (textStyles, size = 'small') => {
   const multiple = {
     small: 1, medium: 1.2, large: 1.4
@@ -37,4 +37,14 @@ export const transformFontSizes = (textStyles, size = 'small') => {
   });
 
   return newStyles;
+};
+
+// Takes the (redux-stored) colorScheme argument and applies it to global colors
+export const transformColors = (colors, scheme = 'full') => {
+  const schemeOptions = ['full', 'bw', 'yellow', 'lc'];
+  if (!schemeOptions.includes(scheme)) {
+    throw new Error(`Given scheme must be among scheme options: ${schemeOptions}`);
+  }
+
+  return colors; // for now - will ideally implement color scheme with a designer
 };

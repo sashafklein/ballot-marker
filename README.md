@@ -17,29 +17,17 @@ yarn install // or `npm install` - install dependencies
 react-native run-ios // run ios simulator
 ```
 
-## App Structure
+# App Structure
 
 ### General notes
 
-Throughout the app, there are `package.json` files that look like the below:
-
-```
-{
-  "name": "@shared"
-}
-```
-
-These files essentially create shortcuts which allow for importing of files in (for example) the `shared` directory without reference to the relative location of either the target or the current directory. In other words, this will import the `base.js` file in the `src/shared` directory from anywhere (given a correct `package.json`):
-
-```
-import '@shared/base';
-```
-
-> Note: Tests do not currently allow for this sort of import.
+I removed aliasing, (ie `import @bundle` type of non-relative imports), which were in the starter kit, because they were breaking tests. I might add them back later.
 
 Like any React Native app, this app is broken into `src`, `ios`, and `android` directories. The JavaScript code is by and large contained within `src`. It compiles into native code in the `ios` and `android` directories.
 
 Within `src`, the app structure is a mix of the "fractal" structure of the starter kit and a more lightweight structure more appropriate to the lightweight nature of the app.
+
+## Src Folders
 
 ### Bundle
 
