@@ -1,6 +1,7 @@
 /* eslint no-undef:0 */
 
-import { styleCombiner } from '../styles';
+import { styleCombiner, transformFontSizes } from '../styles';
+import gbs from '../../styles';
 
 describe('styleCombiner', () => {
   const defaultStyles = {
@@ -63,4 +64,25 @@ describe('styleCombiner', () => {
     const combiner = styleCombiner(styleArray, addStyles, {});
     expect(combiner('thing')).to.eql({ shared: 'add', other4: 'array', other2: 'add' });
   });
+});
+
+describe('transformFontSizes', () => {
+  const original = gbs.t;
+  const small = transformFontSizes(gbs.t, 'small');
+  const medium = transformFontSizes(gbs.t, 'medium');
+  const large = transformFontSizes(gbs.t, 'large');
+
+  const sizes = styleObj => Object.keys(styleObj).map(k => styleObj[k].fontSize).filter(s => s);
+
+  const assertMultiple = (array1, array2, multiple) => {
+    array1.forEach((el, i) => {
+      console.log(el, array2[i])
+      expect(array2[i]).to.eq(el * multiple);
+    });
+  };
+
+  expect(sizes(original).length).not.to.eq(0);
+  assertMultiple(sizes(original), sizes(small), 1);
+  assertMultiple(sizes(original), sizes(medium), 1.2);
+  assertMultiple(sizes(original), sizes(large), 1.4);
 });

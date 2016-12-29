@@ -5,9 +5,12 @@ import { connect } from 'react-redux';
 import gbs from '../../shared/styles';
 import Button from '../../shared/components/Button';
 import { changeSetting } from '../../store/actions';
+import { transformFontSizes } from '../../shared/utils/styles';
 
 const sizes = {
-  small: 20, medium: 25, large: 30
+  small: transformFontSizes({ p: gbs.t.p }, 'small').p.fontSize,
+  medium: transformFontSizes({ p: gbs.t.p }, 'medium').p.fontSize,
+  large: transformFontSizes({ p: gbs.t.p }, 'large').p.fontSize,
 };
 
 // Export an unconnected version for testing

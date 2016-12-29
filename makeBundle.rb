@@ -55,21 +55,29 @@ import { Actions } from 'react-native-router-flux';
 
 import PageWithActions from '../../shared/components/PageWithActions';
 import gbs from '../../shared/styles';
+import { transformTextSizes } from '../../shared/utils/styles';
 
 // Export an unconnected version for testing
-export const #{bundle} = () => (
-  <PageWithActions onBack={ Actions.pop }>
-    <View style={ gbs.l.centeredContainer }>
-    </View>
-  </PageWithActions>
-);
+export const #{bundle} = ({ textSize }) => {
+  const text = transformFontSizes(gbs.t, textSize);
 
-const { func } = React.PropTypes;
-#{bundle}.propTypes = {
-  dispatch: func
+  return (
+    <PageWithActions onBack={ Actions.pop }>
+      <View style={ gbs.l.centeredContainer }>
+      </View>
+    </PageWithActions>
+  );
 };
 
-const mapStateToProps = () => ({});
+const { func, string } = React.PropTypes;
+#{bundle}.propTypes = {
+  dispatch: func,
+  textSize: string
+};
+
+const mapStateToProps = state => ({
+  textSize: state.settings.get('textSize')
+});
 
 export default compose(connect(mapStateToProps))(#{bundle});
 )

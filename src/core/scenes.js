@@ -9,10 +9,10 @@ import TextSize from '../bundles/TextSize';
 
 export default Actions.create(
   <Scene key="root">
-    <Scene key="textSize" component={ TextSize } title="Text Size" />
     <Scene key="launch" component={ Launch } title="Launch" />
     <Scene key="language" component={ Language } title="Language" />
     <Scene key="oops" component={ Oops } title="Oops" />
     <Scene key="headset" component={ Headset } title="Headset" />
+    <Scene key="textSize" component={ TextSize } title="Text Size" />
   </Scene>
 );

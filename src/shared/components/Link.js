@@ -1,28 +1,32 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import gbs from '../styles';
-import { styleCombiner } from '../utils/styles';
+import { styleCombiner, transformFontSizes } from '../utils/styles';
 
-const styles = {
-  text: {
-    fontSize: gbs.t.p.fontSize,
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
-    textDecorationColor: gbs.c.black,
-    color: gbs.c.black,
-    alignSelf: 'center',
-  },
-  link: {
-    flex: 1,
-    alignSelf: 'center',
-    flexDirection: 'column',
-    justifyContent: 'center'
-  }
-};
+export const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacity, textSize }) => {
+  const text = transformFontSizes(gbs.t, textSize);
 
-const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacity }) => {
+  const styles = {
+    text: {
+      fontSize: text.p.fontSize,
+      textAlign: 'center',
+      textDecorationLine: 'underline',
+      textDecorationStyle: 'solid',
+      textDecorationColor: gbs.c.black,
+      color: gbs.c.black,
+      alignSelf: 'center',
+    },
+    link: {
+      flex: 1,
+      alignSelf: 'center',
+      flexDirection: 'column',
+      justifyContent: 'center'
+    }
+  };
+
   const combiner = styleCombiner(styles, addStyles, replaceStyles);
   return (
     <TouchableOpacity
@@ -41,7 +45,8 @@ Link.propTypes = {
   children: string,
   addStyles: oneOfType([object, array]),
   replaceStyles: oneOfType([object, array]),
-  activeOpacity: number
+  activeOpacity: number,
+  textSize: string
 };
 
 Link.defaultProps = {
@@ -49,4 +54,8 @@ Link.defaultProps = {
   activeOpacity: 0.2
 };
 
-export default Link;
+const mapStateToProps = state => ({
+  textSize: state.settings.get('textSize')
+});
+
+export default compose(connect(mapStateToProps))(Link);

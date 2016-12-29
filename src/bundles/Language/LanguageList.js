@@ -29,7 +29,7 @@ export class LanguageList extends React.Component {
                 () => {
                   if (!rowData.error) return;
                   this.props.dispatch(setErrorMessage(rowData.error));
-                  Actions.errorMessage();
+                  Actions.oops();
                 }
               }
               addStyles={{
