@@ -7,7 +7,7 @@ Briefly, this is a ReactNative app, which is written in JavaScript (ES6) and com
 Additional docs on the following topics have been broken out in the `docs` directory:
 
 - [Testing](docs/testing.md)
-- [Style patterns](docs/styles.md)
+- [Style patterns](docs/styling.md)
 - [Redux patterns](docs/redux.md)
 
 ## Getting started

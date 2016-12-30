@@ -1,17 +1,13 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 
-import gbs from '../styles';
-import { styleCombiner, transformFontSizes } from '../utils/styles';
+import { styleCombiner } from '../utils/styles';
+import { wrap } from '../wrap';
 
-export const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacity, textSize }) => {
-  const text = transformFontSizes(gbs.t, textSize);
-
+export const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacity, gbs }) => {
   const styles = {
     text: {
-      fontSize: text.p.fontSize,
+      fontSize: gbs.t.p.fontSize,
       textAlign: 'center',
       textDecorationLine: 'underline',
       textDecorationStyle: 'solid',
@@ -46,7 +42,7 @@ Link.propTypes = {
   addStyles: oneOfType([object, array]),
   replaceStyles: oneOfType([object, array]),
   activeOpacity: number,
-  textSize: string
+  gbs: object
 };
 
 Link.defaultProps = {
@@ -54,8 +50,6 @@ Link.defaultProps = {
   activeOpacity: 0.2
 };
 
-const mapStateToProps = state => ({
-  textSize: state.settings.get('textSize')
-});
+const mapStateToProps = () => ({});
 
-export default compose(connect(mapStateToProps))(Link);
+export default wrap(mapStateToProps)(Link);

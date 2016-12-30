@@ -1,7 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 
 const fs = require('fs');
-const path = require('path');
 const babel = require('babel-core');
 
 const origJs = require.extensions['.js'];

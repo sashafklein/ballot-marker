@@ -1,13 +1,12 @@
 import React from 'react';
 import { ListView } from 'react-native';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+
+import { wrap } from '../../shared/wrap';
 
 import Button from '../../shared/components/Button';
 import languageData from '../../data/languages';
 import { setErrorMessage } from '../../store/actions';
-import gbs from '../../shared/styles';
 
 export class LanguageList extends React.Component {
   constructor(props) {
@@ -19,6 +18,7 @@ export class LanguageList extends React.Component {
   }
 
   render() {
+    const { gbs } = this.props;
     return (
       <ListView
         dataSource={this.state.dataSource}
@@ -51,12 +51,13 @@ export class LanguageList extends React.Component {
   }
 }
 
-const { func } = React.PropTypes;
+const { func, object } = React.PropTypes;
 LanguageList.propTypes = {
-  dispatch: func
+  dispatch: func,
+  gbs: object
 };
 
 
 const mapStateToProps = () => ({});
 
-export default compose(connect(mapStateToProps))(LanguageList);
+export default wrap(mapStateToProps)(LanguageList);

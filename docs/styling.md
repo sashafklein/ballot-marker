@@ -58,3 +58,8 @@ In the below example all the button's default styles other than `backgroundColor
 ```
 
 The button component, compares and combines its default styles for the whole component and the text, and then wraps the result in a `StyleSheet.create` call.
+
+### To look at
+
+- https://www.npmjs.com/package/color
+- https://medium.com/the-react-native-log/tips-for-styling-your-react-native-apps-3f61608655eb#.y4aun777o

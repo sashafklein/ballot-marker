@@ -49,18 +49,13 @@ describe('<#{bundle} />', () => {
 
 index = %Q(import React from 'react';
 import { View } from 'react-native';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 
 import PageWithActions from '../../shared/components/PageWithActions';
-import gbs from '../../shared/styles';
-import { transformTextSizes } from '../../shared/utils/styles';
+import { wrap } from '../../shared/wrap';
 
 // Export an unconnected version for testing
-export const #{bundle} = ({ textSize }) => {
-  const text = transformFontSizes(gbs.t, textSize);
-
+export const #{bundle} = ({ gbs }) => {
   return (
     <PageWithActions onBack={ Actions.pop }>
       <View style={ gbs.l.centeredContainer }>
@@ -69,17 +64,15 @@ export const #{bundle} = ({ textSize }) => {
   );
 };
 
-const { func, string } = React.PropTypes;
+const { func, object } = React.PropTypes;
 #{bundle}.propTypes = {
   dispatch: func,
-  textSize: string
+  gbs: object
 };
 
-const mapStateToProps = state => ({
-  textSize: state.settings.get('textSize')
-});
+const mapStateToProps = state => ({});
 
-export default compose(connect(mapStateToProps))(#{bundle});
+export default wrap(mapStateToProps)(#{bundle});
 )
 
 File.open(scenes_file_path, 'w') { |file| file.write(new_scenes_file + "\n") }

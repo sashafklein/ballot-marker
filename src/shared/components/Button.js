@@ -1,15 +1,11 @@
 import React from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 
-import gbs from '../styles';
-import { styleCombiner, transformFontSizes } from '../utils/styles';
+import { styleCombiner } from '../utils/styles';
+import { wrap } from '../wrap';
 
 import Link from './Link';
 
-export const Button = ({ onPress, children, replaceStyles, addStyles, textSize }) => {
-  const text = transformFontSizes(gbs.t, textSize);
-
+export const Button = ({ onPress, children, replaceStyles, addStyles, gbs }) => {
   const defaultStyles = {
     button: {
       backgroundColor: gbs.c.black,
@@ -20,7 +16,7 @@ export const Button = ({ onPress, children, replaceStyles, addStyles, textSize }
     text: {
       color: gbs.c.white,
       alignSelf: 'center',
-      fontSize: text.h3.fontSize,
+      fontSize: gbs.t.h3.fontSize,
     }
   };
 
@@ -45,7 +41,7 @@ Button.propTypes = {
   onPress: func.isRequired,
   replaceStyles: oneOfType([object, array]),
   addStyles: oneOfType([object, array]),
-  textSize: string
+  gbs: object
 };
 
 Button.defaultProps = {
@@ -53,8 +49,6 @@ Button.defaultProps = {
   addStyles: {}
 };
 
-const mapStateToProps = state => ({
-  textSize: state.settings.get('textSize')
-});
+const mapStateToProps = () => ({});
 
-export default compose(connect(mapStateToProps))(Button);
+export default wrap(mapStateToProps)(Button);

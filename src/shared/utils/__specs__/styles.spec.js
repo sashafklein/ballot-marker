@@ -76,7 +76,6 @@ describe('transformFontSizes', () => {
 
   const assertMultiple = (array1, array2, multiple) => {
     array1.forEach((el, i) => {
-      console.log(el, array2[i])
       expect(array2[i]).to.eq(el * multiple);
     });
   };

@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 
 const seedSettings = {
   textSize: 'small',
-  colorScheme: 'black'
+  colorScheme: 'full'
 };
 
 export default (state = Immutable.fromJS(seedSettings), action = {}) => {
