@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import reduxThunkMiddleware from 'redux-thunk';
 import Reactotron from 'reactotron';
 import promiseMiddleware from './middlewares/promiseMiddleware';
-import * as reducers from './reducers';
+import reducers from './reducers';
 
 Reactotron.connect({
   enabled: __DEV__,

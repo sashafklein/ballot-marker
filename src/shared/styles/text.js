@@ -16,23 +16,23 @@ const scaleText = base => {
 export default {
   // Size
   h1: {
-    fontSize: scaleText(33)
+    fontSize: scaleText(27)
   },
 
   h2: {
-    fontSize: scaleText(28)
+    fontSize: scaleText(23)
   },
 
   h3: {
-    fontSize: scaleText(24)
+    fontSize: scaleText(20)
   },
 
   p: {
-    fontSize: scaleText(22)
+    fontSize: scaleText(18)
   },
 
   small: {
-    fontSize: scaleText(18)
+    fontSize: scaleText(15)
   },
 
   // Weight
