@@ -9,7 +9,7 @@ import { wrap } from '../../shared/wrap';
 // Export an unconnected version for testing
 export const TextSize = ({ gbs }) => {
   return (
-    <PageWithActions onBack={ Actions.pop }>
+    <PageWithActions onBack={ Actions.pop } onNext={ Actions.instructions }>
       <View style={ gbs.l.centeredContainer }>
         <Text style={ [gbs.t.p, gbs.l.p]}>Choose text size and color:</Text>
         {
