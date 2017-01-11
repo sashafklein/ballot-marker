@@ -1,13 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+import { wrap } from '../wrap';
 
-import gbs from '../styles';
 import Button from './Button';
 
 export const PageWithActions = props => {
-  const { onNext, onBack, children, back, next } = props;
+  const { onNext, onBack, children, back, next, gbs } = props;
 
   const button = (onPress, text, colorKey) => (
     text && <Button
@@ -28,7 +26,7 @@ export const PageWithActions = props => {
       { text }
     </Button>
   );
-
+  console.log('size', gbs.t.p.fontSize);
   return (
     <View style={ { flex: 1 } }>
       <View style={ { height: gbs.s.percHeight90 } }>
@@ -42,13 +40,14 @@ export const PageWithActions = props => {
   );
 };
 
-const { element, func, string, oneOfType, array } = React.PropTypes;
+const { element, func, string, oneOfType, array, object } = React.PropTypes;
 PageWithActions.propTypes = {
   children: oneOfType([element, array]).isRequired,
   onNext: func,
   onBack: func,
   next: string,
-  back: string
+  back: string,
+  gbs: object
 };
 
 PageWithActions.defaultProps = {
@@ -58,4 +57,4 @@ PageWithActions.defaultProps = {
 
 const mapStateToProps = () => ({});
 
-export default compose(connect(mapStateToProps))(PageWithActions);
+export default wrap(mapStateToProps)(PageWithActions);
