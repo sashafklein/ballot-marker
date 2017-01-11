@@ -1,5 +1,7 @@
 # Ballot Marker
 
+[![CircleCI](https://circleci.com/gh/sashafklein/ballot-marker.svg?style=svg)](https://circleci.com/gh/sashafklein/ballot-marker)
+
 This repo was built off a clone of the [react-native-redux-starter-kit](https://github.com/LeoLeBras/react-native-redux-starter-kit). For more info on the structure and tools included, check out that site and [the original docs](docs/original.md) stored in this repo.
 
 Briefly, this is a ReactNative app, which is written in JavaScript (ES6) and compiled into native iOS and Android. It uses Redux for storing state information, and Mocha and Chai for testing. Unlike the above starter app, this app does *not* have type checking.
