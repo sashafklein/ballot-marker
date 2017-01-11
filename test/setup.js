@@ -1,4 +1,3 @@
-require('babel-plugin-module-alias');
 const mockery = require('mockery');
 
 const React = require('react');
