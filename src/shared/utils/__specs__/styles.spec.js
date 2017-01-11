@@ -67,21 +67,23 @@ describe('styleCombiner', () => {
 });
 
 describe('transformFontSizes', () => {
-  const original = gbs.t;
-  const small = transformFontSizes(gbs.t, 'small');
-  const medium = transformFontSizes(gbs.t, 'medium');
-  const large = transformFontSizes(gbs.t, 'large');
+  it('transforms styles by the right multiple', () => {
+    const original = gbs.t;
+    const small = transformFontSizes(gbs.t, 'small');
+    const medium = transformFontSizes(gbs.t, 'medium');
+    const large = transformFontSizes(gbs.t, 'large');
 
-  const sizes = styleObj => Object.keys(styleObj).map(k => styleObj[k].fontSize).filter(s => s);
+    const sizes = styleObj => Object.keys(styleObj).map(k => styleObj[k].fontSize).filter(s => s);
 
-  const assertMultiple = (array1, array2, multiple) => {
-    array1.forEach((el, i) => {
-      expect(array2[i]).to.eq(el * multiple);
-    });
-  };
+    const assertMultiple = (array1, array2, multiple) => {
+      array1.forEach((el, i) => {
+        expect(array2[i]).to.eq(el * multiple);
+      });
+    };
 
-  expect(sizes(original).length).not.to.eq(0);
-  assertMultiple(sizes(original), sizes(small), 1);
-  assertMultiple(sizes(original), sizes(medium), 1.2);
-  assertMultiple(sizes(original), sizes(large), 1.4);
+    expect(sizes(original).length).not.to.eq(0);
+    assertMultiple(sizes(original), sizes(small), 1);
+    assertMultiple(sizes(original), sizes(medium), 1.2);
+    assertMultiple(sizes(original), sizes(large), 1.4);
+  });
 });
