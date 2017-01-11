@@ -26,7 +26,7 @@ export const PageWithActions = props => {
       { text }
     </Button>
   );
-  console.log('size', gbs.t.p.fontSize);
+
   return (
     <View style={ { flex: 1 } }>
       <View style={ { height: gbs.s.percHeight90 } }>
