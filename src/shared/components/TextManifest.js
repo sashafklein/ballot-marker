@@ -3,7 +3,9 @@ import { View, Text } from 'react-native';
 import { wrap } from '../wrap';
 
 export const TextManifest = props => {
-  const { textArray, gbs } = props;
+  const { textArray, gbs, paragraphSpacing } = props;
+
+  const pSpacing = paragraphSpacing || gbs.w.mv5;
 
   const lineStyles = {
     h3: gbs.t.h3,
@@ -14,13 +16,13 @@ export const TextManifest = props => {
   return (
     <View>
       {
-        textArray.map(lines => (
-          <View style={ gbs.w.mv5 }>
+        textArray.map((lines, lineIndex) => (
+          <View key={ lineIndex } style={ pSpacing }>
             {
-              lines.map(lineObj => {
+              lines.map((lineObj, textIndex) => {
                 const tag = Object.keys(lineObj)[0];
                 const text = lineObj[tag];
-                return (<Text style={ lineStyles[tag] }>{ text }</Text>);
+                return (<Text key={ textIndex } style={ lineStyles[tag] }>{ text }</Text>);
               })
             }
           </View>
@@ -33,8 +35,8 @@ export const TextManifest = props => {
 const { array, object } = React.PropTypes;
 TextManifest.propTypes = {
   textArray: array,
-  gbs: object
+  gbs: object,
+  paragraphSpacing: object
 };
-
 
 export default wrap()(TextManifest);

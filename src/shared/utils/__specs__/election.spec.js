@@ -1,6 +1,6 @@
 /* eslint no-undef:0 */
 
-import { getTitle } from '../helpers';
+import { getTitle } from '../election';
 
 describe('getTitle', () => {
   it('returns "General Election" when given "general" as type', () => {

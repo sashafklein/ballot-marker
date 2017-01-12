@@ -1,11 +1,11 @@
 /* eslint no-undef:0 */
 
-import { spy } from 'sinon';
-
 import { Instructions } from '../';
+import TextManifest from '../../../shared/components/TextManifest';
 
 describe('<Instructions />', () => {
-  it('has a test', () => {
-    expect(true).to.eq(false);
+  it('renders test', () => {
+    const comp = mockComp(Instructions);
+    expect(comp.find(TextManifest).length).to.eq(1);
   });
 });

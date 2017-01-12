@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { wrap } from '../../shared/wrap';
 import PageWithActions from '../../shared/components/PageWithActions';
 import { isDateElement } from '../../shared/utils/date';
-import { getTitle } from './helpers';
+import { getTitle } from '../../shared/utils/election';
 
 export const Launch = ({ type, fullTitle, gbs }) => {
   // Date of election doesn't seem to be provided in data?
