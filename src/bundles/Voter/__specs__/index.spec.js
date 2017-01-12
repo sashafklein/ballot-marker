@@ -1,7 +1,7 @@
 /* eslint no-undef:0 */
 
 import { Voter } from '../';
-import PageComponent from '../../../shared/components/PageComponent';
+import PageComponent from '../../../shared/components/PageWithActions';
 
 describe('<Voter />', () => {
   it('renders a PageComponent with settings links', () => {
