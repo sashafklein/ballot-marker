@@ -1,12 +1,12 @@
 /* eslint no-undef:0 */
 
 import { Voter } from '../';
-import PageComponent from '../../../shared/components/PageWithActions';
+import PageWithActions from '../../../shared/components/PageWithActions';
 
 describe('<Voter />', () => {
-  it('renders a PageComponent with settings links', () => {
+  it('renders a PageWithActions with settings links', () => {
     const comp = mockComp(Voter, { election: 0 });
-    const page = comp.find(PageComponent).first();
-    expect(page.props().topButtons).to.eql({});
+    const page = comp.find(PageWithActions).first();
+    expect(page.exists()).to.eq(true)
   });
 });
