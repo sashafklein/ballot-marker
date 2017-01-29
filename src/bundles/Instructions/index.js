@@ -9,7 +9,7 @@ import { wrap } from '../../shared/wrap';
 // Export an unconnected version for testing
 export const Instructions = ({ gbs }) => {
   return (
-    <PageWithActions onBack={ Actions.pop }>
+    <PageWithActions onBack={ Actions.pop } onNext={ Actions.electionDetails }>
       <View style={ gbs.l.centeredContainer }>
         <ScrollView>
           <TextManifest

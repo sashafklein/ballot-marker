@@ -10,7 +10,7 @@ import { wrap } from '../../shared/wrap';
 // Export an unconnected version for testing
 export const Language = ({ gbs }) => {
   return (
-    <PageWithActions onBack={ Actions.pop } onNext={ Actions.textSize }>
+    <PageWithActions onBack={ Actions.pop } onNext={ Actions.settings }>
       <View style={ [gbs.l.centeredContainer, gbs.w.mh0] }>
         <Text style={ gbs.t.p }>Set your language:</Text>
         <View style={ gbs.w.mt50 } >
