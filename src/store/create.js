@@ -1,18 +1,18 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import reduxThunkMiddleware from 'redux-thunk';
-import Reactotron from 'reactotron';
+// import Reactotron from 'reactotron-react-native';
 import promiseMiddleware from './middlewares/promiseMiddleware';
 import reducers from './reducers';
 
-Reactotron.connect({
-  enabled: __DEV__,
-});
+// Reactotron.connect({
+//   enabled: __DEV__,
+// });
 
 const enhancer = compose(
   applyMiddleware(
     reduxThunkMiddleware,
     promiseMiddleware,
-    Reactotron.reduxMiddleware,
+    // Reactotron.reduxMiddleware,
   ),
 );
 
@@ -23,9 +23,9 @@ export default function configureStore(initialState) {
     enhancer
   );
 
-  if (__DEV__) {
-    Reactotron.addReduxStore(store);
-  }
+  // if (__DEV__) {
+  //   Reactotron.addReduxStore(store);
+  // }
 
   return store;
 }
