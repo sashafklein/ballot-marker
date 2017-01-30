@@ -1,53 +1,39 @@
 import React from 'react';
 import { View } from 'react-native';
+import ButtonBar from './ButtonBar';
 import { wrap } from '../wrap';
 
-import Button from './Button';
-
 export const PageWithActions = props => {
-  const { onNext, onBack, children, back, next, gbs } = props;
+  const { onNext, onBack, children, back, next, gbs, headerItems } = props;
 
-  const button = (onPress, text, colorKey) => (
-    text && <Button
-      onPress={ onPress || (() => {}) }
-      replaceStyles={ {
-        button: [
-          {
-            height: gbs.s.percHeight10,
-            alignSelf: 'center',
-            justifyContent: 'center',
-            flex: 1,
-          },
-          { backgroundColor: gbs.c[colorKey] },
-          onPress ? {} : { backgroundColor: gbs.c.lightGrey }
-        ]
-      } }
-    >
-      { text }
-    </Button>
-  );
+  const footerItems = [];
+  if (back) { footerItems.push({ onPress: onBack, content: back, colorKey: 'red' }) }
+  if (next) { footerItems.push({ onPress: onNext, content: next, colorKey: 'green' }) }
 
   return (
     <View style={ { flex: 1 } }>
-      <View style={ { height: gbs.s.percHeight90 } }>
+      <ButtonBar items={ headerItems } gbs={ gbs } />
+      <View style={ {
+        height: headerItems && headerItems.length > 0 ?
+          gbs.s.percHeigh80 :
+          gbs.s.percHeight90
+        } }>
         { children }
       </View>
-      <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', height: gbs.s.percHeight10 } }>
-        { button(onBack, back, 'red') }
-        { button(onNext, next, 'green') }
-      </View>
+      <ButtonBar items={ footerItems } gbs={ gbs } />
     </View>
   );
 };
 
-const { element, func, string, oneOfType, array, object } = React.PropTypes;
+const { element, func, string, oneOfType, array, object, arrayOf } = React.PropTypes;
 PageWithActions.propTypes = {
   children: oneOfType([element, array]).isRequired,
   onNext: func,
   onBack: func,
   next: string,
   back: string,
-  gbs: object
+  gbs: object,
+  headerItems: arrayOf(object)
 };
 
 PageWithActions.defaultProps = {

@@ -7,9 +7,13 @@ import TextSizeButton from './TextSizeButton';
 import { wrap } from '../../shared/wrap';
 
 // Export an unconnected version for testing
-export const Settings = ({ gbs }) => {
+export const Settings = ({ gbs, fromVote }) => {
   return (
-    <PageWithActions onBack={ Actions.pop } onNext={ Actions.instructions }>
+    <PageWithActions
+      onBack={ Actions.pop }
+      onNext={ Actions.instructions }
+      next={ fromVote ? null : 'Next' }
+    >
       <ScrollView>
         <View style={ gbs.l.centeredContainer }>
           <Text style={ [gbs.t.p, gbs.l.p]}>Choose text size and color:</Text>
@@ -28,9 +32,10 @@ export const Settings = ({ gbs }) => {
   );
 };
 
-const { object } = React.PropTypes;
+const { object, bool } = React.PropTypes;
 Settings.propTypes = {
-  gbs: object
+  gbs: object,
+  fromVote: bool
 };
 
 export default wrap()(Settings);
