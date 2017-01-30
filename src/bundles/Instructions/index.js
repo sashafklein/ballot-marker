@@ -9,7 +9,13 @@ import { wrap } from '../../shared/wrap';
 // Export an unconnected version for testing
 export const Instructions = ({ gbs }) => {
   return (
-    <PageWithActions onBack={ Actions.pop } onNext={ Actions.electionDetails }>
+    <PageWithActions
+      onBack={ Actions.pop }
+      onNext={ Actions.electionDetails }
+      headerItems={
+        [{ content: 'Settings', onPress: () => Actions.settings({ fromVote: true }), colorKey: 'green' }]
+      }
+    >
       <View style={ gbs.l.centeredContainer }>
         <ScrollView>
           <TextManifest

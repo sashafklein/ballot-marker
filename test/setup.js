@@ -1,5 +1,6 @@
-const mockery = require('mockery');
+require('babel-core');
 
+const mockery = require('mockery');
 const React = require('react');
 const enzyme = require('enzyme');
 const chai = require('chai');

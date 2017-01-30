@@ -47,14 +47,14 @@ export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
   );
 };
 
-const { string, object } = React.PropTypes;
+const { string, object, array } = React.PropTypes;
 ElectionDetails.propTypes = {
   gbs: object,
   type: string,
   date: string,
   city: string,
   area: string,
-  contests: object
+  contests: array
 };
 
 const mapStateToProps = state => ({
