@@ -3548,6 +3548,15 @@ reactotron-react-native@^1.6.0:
     reactotron-core-client "^1.6.0"
     socket.io-client "~1.7.1"
 
+reactotron-redux@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/reactotron-redux/-/reactotron-redux-1.6.1.tgz#5fe74c9e0d90408817877239a08c7626a4b5b695"
+  dependencies:
+    ramda "^0.22.1"
+    ramdasauce "^1.1.1"
+    reactotron-core-client "^1.6.0"
+    redux "^3.6.0"
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"
@@ -3615,7 +3624,7 @@ redux-thunk@^2.0.1:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
 
-redux@^3.5.2:
+redux@^3.5.2, redux@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.6.0.tgz#887c2b3d0b9bd86eca2be70571c27654c19e188d"
   dependencies:

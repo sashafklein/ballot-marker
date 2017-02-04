@@ -41,7 +41,7 @@ export const transformFontSizes = (textStyles, size = 'small') => {
 
 // Takes the (redux-stored) colorScheme argument and applies it to global colors
 export const transformColors = (colors, scheme = 'full') => {
-  const schemeOptions = ['full', 'bw', 'yellow', 'lc'];
+  const schemeOptions = ['full', 'blackWhite', 'highContrast', 'lowContrast'];
   if (!schemeOptions.includes(scheme)) {
     throw new Error(`Given scheme must be among scheme options: ${schemeOptions}`);
   }

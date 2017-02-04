@@ -1,31 +1,31 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import reduxThunkMiddleware from 'redux-thunk';
-// import Reactotron from 'reactotron-react-native';
+import Reactotron from 'reactotron-react-native';
+import { reactotronRedux } from 'reactotron-redux';
+
 import promiseMiddleware from './middlewares/promiseMiddleware';
 import reducers from './reducers';
 
-// Reactotron.connect({
-//   enabled: __DEV__,
-// });
+Reactotron.configure()
+  .use(reactotronRedux())
+  .connect({ name: 'Ballot Marker' });
 
 const enhancer = compose(
   applyMiddleware(
     reduxThunkMiddleware,
-    promiseMiddleware,
-    // Reactotron.reduxMiddleware,
+    promiseMiddleware
+    // Reactotron.reduxMiddleware
   ),
 );
 
 export default function configureStore(initialState) {
-  const store = createStore(
+  const storeCreator = __DEV__ ? Reactotron.createStore : createStore;
+
+  const store = storeCreator(
     combineReducers({ ...reducers }),
     initialState,
     enhancer
   );
-
-  // if (__DEV__) {
-  //   Reactotron.addReduxStore(store);
-  // }
 
   return store;
 }

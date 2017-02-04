@@ -56,6 +56,7 @@
     "react-dom": "^15.4.1",
     "react-native-mock": "^0.2.9",
     "reactotron-react-native": "^1.6.0",
+    "reactotron-redux": "^1.6.1",
     "sinon": "^1.17.6"
   }
 }
