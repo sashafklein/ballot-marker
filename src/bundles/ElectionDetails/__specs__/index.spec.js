@@ -1,7 +1,5 @@
 /* eslint no-undef:0 */
 
-import { spy } from 'sinon';
-
 import { ElectionDetails } from '../';
 import PageWithActions from '../../../shared/components/PageWithActions';
 

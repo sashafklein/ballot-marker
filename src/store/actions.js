@@ -2,6 +2,6 @@ export const changeSetting = (setting, value) => ({
   type: 'CHANGE_SETTING', setting, value
 });
 
-export const setErrorMessage = message => ({
-  type: 'SET_ERROR_MESSAGE', message
+export const setVote = (contestIndex, selections) => ({
+  type: 'SET_VOTE', contestIndex, selections
 });

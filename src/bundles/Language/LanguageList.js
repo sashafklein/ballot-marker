@@ -6,7 +6,6 @@ import { wrap } from '../../shared/wrap';
 
 import Button from '../../shared/components/Button';
 import languageData from '../../data/languages';
-import { setErrorMessage } from '../../store/actions';
 
 export class LanguageList extends React.Component {
   constructor(props) {
@@ -28,8 +27,7 @@ export class LanguageList extends React.Component {
               onPress={
                 () => {
                   if (!rowData.error) return;
-                  this.props.dispatch(setErrorMessage(rowData.error));
-                  Actions.oops();
+                  Actions.oops({ messages: rowData.error });
                 }
               }
               addStyles={{

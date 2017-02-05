@@ -3,24 +3,24 @@ import { View, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 import Button from '../../shared/components/Button';
-import { setErrorMessage } from '../../store/actions';
 
 import { wrap } from '../../shared/wrap';
 
 const message = (msg, ind, gbs) => <Text key={ ind } style={ [ gbs.t.p, gbs.l.p ] }>{ msg }</Text>;
 
 // Export an unconnected version for testing
-export const Oops = ({ messages, dispatch, gbs }) => (
+export const Oops = ({ messages, gbs }) => (
   <View style={ { flex: 1, height: gbs.s.percHeigh100 } }>
     <View style={ gbs.l.centeredContainer }>
       {
-        messages instanceof Array ?
-        messages.map((msg, ind) => message(msg, ind, gbs)) :
-        message(messages, 0, gbs)
+        messages.map((msg, ind) => (
+          typeof msg === 'string'
+            ? message(msg, ind, gbs)
+            : msg
+        ))
       }
       <Button
         onPress={ () => {
-          dispatch(setErrorMessage(null));
           Actions.pop();
         } }
         addStyles={ {
@@ -33,11 +33,14 @@ export const Oops = ({ messages, dispatch, gbs }) => (
   </View>
 );
 
-const { func, string, oneOfType, array, object } = React.PropTypes;
+const { string, oneOfType, arrayOf, element, object } = React.PropTypes;
 Oops.propTypes = {
-  dispatch: func,
-  messages: oneOfType([string, array]),
+  messages: arrayOf(oneOfType(string, element)),
   gbs: object
+};
+
+Oops.defaultProps = {
+  messages: ['Something went wrong!']
 };
 
 const mapStateToProps = state => ({

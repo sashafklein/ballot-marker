@@ -14,8 +14,9 @@
     "build-android": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.android.js --bundle-output iOS/main.jsbundle --platform 'android' --assets-dest ./  --dev false --reset-cache",
     "reactotron": "node_modules/.bin/reactotron",
     "test": "mocha --opts test/mocha.opts --require react-native-mock/mock 'src/**/__specs__/*.spec.js'",
+    "test:watch": "mocha -w --opts test/mocha.opts --require react-native-mock/mock 'src/**/__specs__/*.spec.js'",
     "lint": "eslint .",
-    "lintfix": "eslint . --fix",
+    "lint:fix": "eslint . --fix",
     "ios": "react-native run-ios --simulator 'iPad Pro (9.7 inch)'"
   },
   "engines": {
