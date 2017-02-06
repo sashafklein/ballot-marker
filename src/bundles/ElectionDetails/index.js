@@ -11,7 +11,11 @@ import { getTitle } from '../../shared/utils/election';
 // Export an unconnected version for testing
 export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
   return (
-    <PageWithActions onBack={ Actions.pop }>
+    <PageWithActions
+      onBack={ Actions.pop }
+      onNext={ () => { Actions.voter({ contestIndex: 0 }); } }
+      next="Begin Voting"
+    >
       <View style={ gbs.l.centeredContainer }>
         <ScrollView>
           <View style={ gbs.w.mv10 }>
@@ -47,14 +51,14 @@ export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
   );
 };
 
-const { string, object, array } = React.PropTypes;
+const { string, object } = React.PropTypes;
 ElectionDetails.propTypes = {
   gbs: object,
   type: string,
   date: string,
   city: string,
   area: string,
-  contests: array
+  contests: object // Immutable List
 };
 
 const mapStateToProps = state => ({

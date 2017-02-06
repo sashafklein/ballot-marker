@@ -17,6 +17,10 @@ const data = {
   _init: fromJS(startingData.ElectionReport)
 };
 
+const selections = {
+  _init: fromJS([]),
+  SET_VOTE: (state, action) => state.set(action.contestIndex, fromJS(action.selections))
+};
 
-export const handlers = { errorMessage, data, settings };
+export const handlers = { errorMessage, data, settings, selections };
 export default constructReducers(handlers);
