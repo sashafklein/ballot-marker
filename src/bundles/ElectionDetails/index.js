@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { list } from 'react-immutable-proptypes';
 
 import PageWithActions from '../../shared/components/PageWithActions';
 import { wrap } from '../../shared/wrap';
@@ -58,7 +59,7 @@ ElectionDetails.propTypes = {
   date: string,
   city: string,
   area: string,
-  contests: object // Immutable List
+  contests: list
 };
 
 const mapStateToProps = state => ({

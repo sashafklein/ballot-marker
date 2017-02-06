@@ -1,24 +1,24 @@
+/* eslint no-underscore-dangle:0 */
 import React from 'react';
 import { Text, View, ListView, Switch } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import _ from 'lodash';
 import { fromJS } from 'immutable';
+import { list } from 'react-immutable-proptypes';
 
 import PageWithActions from '../../shared/components/PageWithActions';
 import { wrap } from '../../shared/wrap';
 import { setVote } from '../../store/actions';
 
-const createOptionsObjects = (rawOptions, selections) => rawOptions.map(option => ({
-  text: option,
-  selected: selections.includes(option)
-})).toJS();
+const createOptionsObjects = (options, selections) => options
+  .map(option => Object.assign(option, { selected: selections.includes(options) }));
 
 const VoteRow = ({ option, onValueChange, gbs }) => {
   return (
     <View>
       <Switch
         value={ option.selected }
-        onValueChange={ () => { onValueChange(option.text); } }
+        onValueChange={ () => { onValueChange(option); } }
         testID={ _.kebabCase(option.text) }
       />
       <Text style={ gbs.t.p }>{ option.text }</Text>
@@ -31,7 +31,7 @@ export class Voter extends React.Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
-    const options = createOptionsObjects(props.rawOptions, props.selections);
+    const options = createOptionsObjects(props.options, props.selections);
 
     this.state = {
       dataSource: ds.cloneWithRows(options),
@@ -39,19 +39,20 @@ export class Voter extends React.Component {
     };
   }
 
-  componentWillReceiveProps({ selections, rawOptions }) {
+  componentWillReceiveProps({ selections, options }) {
     if (selections !== this.props.selections) {
+      debugger
       const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
-      const options = createOptionsObjects(rawOptions, selections);
 
       this.setState({
-        dataSource: ds.cloneWithRows(options)
+        dataSource: ds.cloneWithRows(createOptionsObjects(options, selections))
       });
     }
   }
 
   handleSelection(selection) {
     const { selections, selectionLimit, dispatch, contestIndex, gbs } = this.props;
+    const cleanedSelection = _.omit(selection, 'selected');
 
     if (selections.size >= selectionLimit) {
       const messages = [
@@ -60,9 +61,9 @@ export class Voter extends React.Component {
       ];
       Actions.oops({ messages });
     } else {
-      const nextSelections = selections.includes(selection)
-        ? _.without(selections.toJS(), selection)
-        : [...selections.toJS(), selection];
+      const nextSelections = selections.includes(cleanedSelection)
+        ? _.without(selections.toJS(), cleanedSelection)
+        : [...selections.toJS(), cleanedSelection];
 
       dispatch(setVote(contestIndex, nextSelections));
     }
@@ -91,11 +92,11 @@ export class Voter extends React.Component {
   }
 }
 
-const { object, array, number, string, func } = React.PropTypes;
+const { object, number, string, func, array } = React.PropTypes;
 Voter.propTypes = {
   gbs: object,
-  rawOptions: object,
-  selections: object,
+  options: array,
+  selections: list,
   selectionLimit: number,
   contestIndex: number,
   name: string,
@@ -103,19 +104,37 @@ Voter.propTypes = {
 };
 
 Voter.defaultProps = {
-  rawOptions: fromJS([ 'Option 1', 'Option 2', 'Option 3' ]),
+  options: [ 'Option 1', 'Option 2', 'Option 3' ]
+    .map(opt => ({ text: opt, id: opt })),
   selectionLimit: 2,
   contestIndex: 0
 };
 
 const mapStateToProps = (state, props) => {
-  const contest = state.data.getIn(['Election', 'ContestCollection', 'Contest', props.contestIndex || 0]);
-  const selections = state.selections.get(props.contestIndex || 0) || fromJS([]);
+  const election = state.data.get('Election');
+  const contest = election.getIn(['ContestCollection', 'Contest', props.contestIndex || 3]);
+  const selections = state.selections.get(props.contestIndex || 3) || fromJS([]);
+  const contestType = contest.get('_xsi:type').split('Contest')[0];
+  const nameKey = contestType === 'Candidate'
+    ? 'BallotName'
+    : 'Name';
+  const optionCollection = election.getIn([`${contestType}Collection`, contestType]);
+
+  const options = contest.get('BallotSelection').map(option => {
+    const id = `${contestType}Id`;
+    const optionObjID = typeof option.get(id) === 'string'
+      ? option.get(id)
+      : option.get(id).get(0);
+    const referenceObject = optionCollection.find(obj => obj.get('_objectId') === optionObjID);
+    const name = referenceObject.getIn([nameKey, 'Text', '__text']);
+
+    return { text: name, id: optionObjID };
+  }).toJS();
 
   return {
     selections,
-    selectionLimit: contest.get('NumberElected'),
-    // rawOptions: contest.get('BallotSelection'),
+    selectionLimit: parseInt(contest.get('NumberElected')),
+    options,
     name: contest.get('Name')
   };
 };

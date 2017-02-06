@@ -19,7 +19,11 @@ const data = {
 
 const selections = {
   _init: fromJS([]),
-  SET_VOTE: (state, action) => state.set(action.contestIndex, fromJS(action.selections))
+  SET_VOTE: (state, action) => {
+    const toReturn = state.set(action.contestIndex, fromJS(action.selections))
+    debugger
+    return toReturn;
+  }
 };
 
 export const handlers = { errorMessage, data, settings, selections };
