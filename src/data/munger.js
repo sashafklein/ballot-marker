@@ -2,18 +2,23 @@
 
 import { Map, fromJS } from 'immutable';
 
-const incorporateExtra = (originalObject, extrasObject, immutableObject) => fromJS(
-  Object.assign(
-    {},
-    originalObject,
-    Object.keys(extrasObject)
-      .reduce((obj, key) => Object.assign(
-        {},
-        obj,
-        { [key]: immutableObject.getIn(extrasObject[key]) }
-      ), {})
-  )
-);
+const partyNamePath = ['Name', 'Text', '__text'];
+const candidateNamePath = ['BallotName', 'Text', '__text'];
+
+// const incorporateExtra = (originalObject, extrasObject, immutableObject) => fromJS(
+//   Object.assign(
+//     {},
+//     originalObject,
+//     Object.keys(extrasObject)
+//       .reduce((obj, key) => Object.assign(
+//         {},
+//         obj,
+//         { [key]: immutableObject.getIn(extrasObject[key]) }
+//       ), {})
+//   )
+// );
+
+const log = (thing) => {  return thing; };
 
 const optionFromSelection = (selection, list, selectionNamePath, objectPath, optionExtra) => {
   if (!selection.getIn) {
@@ -22,15 +27,14 @@ const optionFromSelection = (selection, list, selectionNamePath, objectPath, opt
 
   const object = list.find(p => p.get('_objectId') === selection.getIn(objectPath));
   if (object) {
-    const objectJSON = incorporateExtra(
+    const objectJSON = fromJS(Object.assign({},
       {
         name: object.getIn(selectionNamePath),
         abbreviation: object.get('Abbreviation'),
         id: object.get('_objectId')
       },
-      optionExtra,
-      object
-    );
+      optionExtra || {}
+    ));
     return objectJSON;
   } else {
     console.log('No associated object found for', selection.toJS());
@@ -38,48 +42,84 @@ const optionFromSelection = (selection, list, selectionNamePath, objectPath, opt
   }
 };
 
-const createStitchedList = (contest, list, selectionNamePath, contestExtra, optionExtra = {}) => {
+// const createStitchedList = (contest, list, selectionNamePath, contestExtra, optionExtra = {}) => {
+//   let selections = contest.get('BallotSelection');
+//   const type = contest.get('_xsi:type');
+//   if (!selections) {
+//     return null; // TODO - Handle weird data like 'PRECINCT 3, DIRECTOR, BARTON SPRINGS EDWARDS AQUIFER CONSERVATION DISTRICT'
+//   } else if (selections instanceof Map) {
+//     // Some selections data is a single object, instead of an array of them
+//     selections = fromJS([selections]);
+//   }
+
+//   return fromJS(Object.assign({},
+//     {
+//       options: selections.map(selection => optionFromSelection(
+//         selection,
+//         list,
+//         selectionNamePath,
+//         type === 'PartyContest' ? ['PartyId'] : ['CandidateId', 0]
+//       )).filter(option => option),
+//       type,
+//       name: contest.get('Name'),
+//       voteLimit: parseInt(contest.get('NumberElected') || 1)
+//     },
+//     contestExtra
+//   ));
+// };
+
+// TODO - Handle weird data like 'PRECINCT 3, DIRECTOR, BARTON SPRINGS EDWARDS AQUIFER CONSERVATION DISTRICT'
+const getSelections = contest => {
   let selections = contest.get('BallotSelection');
-  const type = contest.get('_xsi:type');
-  if (!selections) {
-    return null; // TODO - Handle weird data like 'PRECINCT 3, DIRECTOR, BARTON SPRINGS EDWARDS AQUIFER CONSERVATION DISTRICT'
-  } else if (selections instanceof Map) {
+  if (selections instanceof Map) {
     // Some selections data is a single object, instead of an array of them
     selections = fromJS([selections]);
   }
-
-  return incorporateExtra(
-    {
-      options: selections.map(selection => optionFromSelection(
-        selection,
-        list,
-        selectionNamePath,
-        type === 'PartyContest' ? ['PartyId'] : ['CandidateId', 0],
-        optionExtra
-      )).filter(option => option),
-      type,
-      name: contest.get('Name'),
-      voteLimit: parseInt(contest.get('NumberElected') || 1)
-    },
-    contestExtra || {},
-    contest
-  );
+  return selections || fromJS([]);
 };
 
-const createPartyContestList = (contest, parties) => createStitchedList(
-  contest,
-  parties,
-  ['Name', 'Text', '__text'],
-  { electoralDistrictID: ['ElectoralDistrictId'] }
-);
+const createPartyContestList = (contest, parties) => {
+  return log(fromJS({
+    options: getSelections(contest).map(selection => optionFromSelection(
+      selection,
+      parties,
+      partyNamePath,
+      ['CandidateId', 0],
+      {}
+    )).filter(option => option),
+    type: contest.get('_xsi:type'),
+    name: contest.get('Name'),
+    voteLimit: parseInt(contest.get('NumberElected') || 1),
+    electoralDistrictID: contest.get('ElectoralDistrictId')
+  }));
+};
 
-const createCandidateContestList = (contest, candidates) => createStitchedList(
-  contest,
-  candidates,
-  ['BallotName', 'Text', '__text'],
-  {},
-  { partyId: ['PartyId'] }
-);
+
+const createCandidateContestList = (contest, candidates, parties) => {
+  const optionExtra = selection => {
+    const candidate = candidates.find(c => c.get('_objectId') === selection.getIn(['CandidateId', 0]));
+    const party = parties.find(p => p.get('_objectId') === candidate.get('PartyId'));
+
+    return {
+      partyID: candidate.get('PartyId'),
+      partyName: party && party.getIn(partyNamePath)
+    };
+  };
+
+  return log(fromJS({
+    options: getSelections(contest).map(selection => optionFromSelection(
+      selection,
+      candidates,
+      candidateNamePath,
+      ['CandidateId', 0],
+      optionExtra(selection)
+    )).filter(option => option),
+    id: contest.get('_objectId'),
+    type: contest.get('_xsi:type'),
+    name: contest.get('Name'),
+    voteLimit: parseInt(contest.get('NumberElected') || 1)
+  }));
+};
 
 const createBallotMeatureContestList = contest => fromJS({
   name: contest.get('Name'),
@@ -88,7 +128,7 @@ const createBallotMeatureContestList = contest => fromJS({
   id: contest.get('_objectId'),
   type: 'BallotMeasureContest',
   voteLimit: parseInt(contest.get('NumberElected') || 1),
-  options: contest.get('BallotSelection').map(option => fromJS({
+  options: getSelections(contest).map(option => fromJS({
     name: option.getIn(['Selection', 'Text', '__text']),
     id: option.get('_objectId')
   }))
@@ -100,7 +140,7 @@ export const stitchTogetherContests = (contests, parties, candidates) => {
     if (type === 'PartyContest') {
       return createPartyContestList(contest, parties);
     } else if (type === 'CandidateContest') {
-      return createCandidateContestList(contest, candidates);
+      return createCandidateContestList(contest, candidates, parties);
     } else if (type === 'BallotMeasureContest') {
       return createBallotMeatureContestList(contest);
     } else {
