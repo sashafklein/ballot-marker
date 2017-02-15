@@ -63,11 +63,11 @@ ElectionDetails.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  type: state.data.getIn(['Election', 'Type']),
-  date: state.data.getIn(['Election', 'Name', 'Text', '__text']).split(' ').filter(el => isDateElement(el)).join(' '),
-  city: state.data.getIn(['Issuer']),
-  area: state.data.getIn(['IssuerAbbreviation']),
-  contests: state.data.getIn(['Election', 'ContestCollection', 'Contest'])
+  type: state.metaData.get('type'),
+  date: state.metaData.get('fullTitle').split(' ').filter(el => isDateElement(el)).join(' '),
+  city: state.metaData.get('city'),
+  area: state.metaData.get('area'),
+  contests: state.contests
 });
 
 export default wrap(mapStateToProps)(ElectionDetails);

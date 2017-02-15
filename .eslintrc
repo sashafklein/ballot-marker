@@ -15,7 +15,9 @@
     "node": true
   },
   "globals": {
-    "__DEV__": true
+    "__DEV__": true,
+    "expect": true,
+    "mockComp": true
   },
   "rules": {
     "array-bracket-spacing": 0,
@@ -29,6 +31,7 @@
     "import/no-named-as-default": 0,
     "jsx-boolean-value": 0,
     "no-floating-decimal": 0,
+    "no-else-return": 0,
     "radix": ["error", "as-needed"],
     "react/jsx-filename-extension": 0,
     "react/jsx-curly-spacing": 0,

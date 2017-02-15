@@ -111,30 +111,12 @@ Voter.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => {
-  const election = state.data.get('Election');
-  const contest = election.getIn(['ContestCollection', 'Contest', props.contestIndex || 3]);
   const selections = state.selections.get(props.contestIndex || 3) || fromJS([]);
-  const contestType = contest.get('_xsi:type').split('Contest')[0];
-  const nameKey = contestType === 'Candidate'
-    ? 'BallotName'
-    : 'Name';
-  const optionCollection = election.getIn([`${contestType}Collection`, contestType]);
-
-  const options = contest.get('BallotSelection').map(option => {
-    const id = `${contestType}Id`;
-    const optionObjID = typeof option.get(id) === 'string'
-      ? option.get(id)
-      : option.get(id).get(0);
-    const referenceObject = optionCollection.find(obj => obj.get('_objectId') === optionObjID);
-    const name = referenceObject.getIn([nameKey, 'Text', '__text']);
-
-    return { text: name, id: optionObjID };
-  }).toJS();
+  const contest = state.contests.get(props.contextIndex || 3);
 
   return {
     selections,
-    selectionLimit: parseInt(contest.get('NumberElected')),
-    options,
+    selectionLimit: contest.get('voteLimit'),
     name: contest.get('Name')
   };
 };

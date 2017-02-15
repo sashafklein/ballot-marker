@@ -36,8 +36,8 @@ Launch.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  type: state.data.getIn(['Election', 'Type']),
-  fullTitle: state.data.getIn(['Election', 'Name', 'Text', '__text'])
+  type: state.metaData.get('type'),
+  fullTitle: state.metaData.get('fullTitle')
 });
 
 export default wrap(mapStateToProps)(Launch);
