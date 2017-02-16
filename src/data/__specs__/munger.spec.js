@@ -11,8 +11,9 @@ const parties = allData.getIn(['PartyCollection', 'Party']);
 const candidates = allData.getIn(['Election', 'CandidateCollection', 'Candidate']);
 
 const assertAttr = (obj, attr) => {
-  if (!obj.get(attr)) {
-    console.error(`Expected obj to have attr.\n Obj: ${obj}\n Attr: ${attr}`);
+  const found = obj.get(attr);
+  if (found === undefined || found === null) {
+    console.error(`Expected obj to have attr '${attr} : ${obj}`);
     expect(obj.get(attr)).to.exist;
   }
 };
@@ -42,8 +43,8 @@ describe('stitchTogetherContests', () => {
     stitched.filter(c => c.get('type') === 'CandidateContest').forEach(contest => {
       runContestTest(
         contest,
-        ['name', 'id', 'voteLimit'],
-        ['name', 'partyName', 'partyID', 'id'],
+        ['name', 'id', 'voteLimit', 'index'],
+        ['name', 'partyName', 'partyID', 'id', 'index'],
         false
       );
     });
@@ -53,8 +54,8 @@ describe('stitchTogetherContests', () => {
     stitched.filter(c => c.get('type') === 'BallotMeasureContest').forEach(contest => {
       runContestTest(
         contest,
-        ['name', 'electoralDistrictID', 'text', 'id', 'voteLimit'],
-        ['name', 'id']
+        ['name', 'electoralDistrictID', 'text', 'id', 'voteLimit', 'index'],
+        ['name', 'id', 'index']
       );
     });
   });
@@ -63,8 +64,8 @@ describe('stitchTogetherContests', () => {
     stitched.filter(c => c.get('type') === 'PartyContest').forEach(contest => {
       runContestTest(
         contest,
-        ['type', 'name', 'voteLimit', 'electoralDistrictID', 'id'],
-        ['name', 'abbreviation', 'id']
+        ['type', 'name', 'voteLimit', 'electoralDistrictID', 'id', 'index'],
+        ['name', 'abbreviation', 'id', 'index']
       );
     });
   });

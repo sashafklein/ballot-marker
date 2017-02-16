@@ -5,7 +5,7 @@ import { Map, fromJS } from 'immutable';
 const partyNamePath = ['Name', 'Text', '__text'];
 const candidateNamePath = ['BallotName', 'Text', '__text'];
 
-const optionFromSelection = (selection, list, selectionNamePath, objectPath, optionExtra) => {
+const optionFromSelection = (selection, list, selectionNamePath, objectPath, optionExtra, index) => {
   if (!selection.getIn) {
     return null; // TODO figure out how to handle bad data like candidate-62 contest
   }
@@ -16,7 +16,8 @@ const optionFromSelection = (selection, list, selectionNamePath, objectPath, opt
       {
         name: object.getIn(selectionNamePath),
         abbreviation: object.get('Abbreviation'),
-        id: object.get('_objectId')
+        id: object.get('_objectId'),
+        index
       },
       optionExtra || {}
     ));
@@ -42,25 +43,27 @@ const getSelections = contest => {
   return selections || fromJS([]);
 };
 
-const createPartyContestList = (contest, parties) => {
+const createPartyContestList = (contest, parties, index) => {
   return fromJS({
-    options: getSelections(contest).map(selection => optionFromSelection(
+    options: getSelections(contest).map((selection, selectionIndex) => optionFromSelection(
       selection,
       parties,
       partyNamePath,
       ['PartyId'],
-      {}
+      {},
+      selectionIndex
     )).filter(option => option),
     type: contest.get('_xsi:type'),
     name: contest.get('Name'),
     id: contest.get('_objectId'),
     voteLimit: parseInt(contest.get('NumberElected') || 1),
-    electoralDistrictID: contest.get('ElectoralDistrictId')
+    electoralDistrictID: contest.get('ElectoralDistrictId'),
+    index
   });
 };
 
 
-const createCandidateContestList = (contest, candidates, parties) => {
+const createCandidateContestList = (contest, candidates, parties, index) => {
   const optionExtra = selection => {
     const candidate = candidates.find(c => c.get('_objectId') === selection.getIn(['CandidateId', 0]));
     const party = parties.find(p => p.get('_objectId') === candidate.get('PartyId'));
@@ -72,44 +75,48 @@ const createCandidateContestList = (contest, candidates, parties) => {
   };
 
   return fromJS({
-    options: getSelections(contest).map(selection => optionFromSelection(
+    options: getSelections(contest).map((selection, selectionIndex) => optionFromSelection(
       selection,
       candidates,
       candidateNamePath,
       ['CandidateId', 0],
-      optionExtra(selection)
+      optionExtra(selection),
+      selectionIndex
     )).filter(option => option),
     id: contest.get('_objectId'),
     type: contest.get('_xsi:type'),
     name: contest.get('Name'),
-    voteLimit: parseInt(contest.get('NumberElected') || 1)
+    voteLimit: parseInt(contest.get('NumberElected') || 1),
+    index
   });
 };
 
-const createBallotMeatureContestList = contest => fromJS({
+const createBallotMeatureContestList = (contest, index) => fromJS({
   name: contest.get('Name'),
   electoralDistrictID: contest.get('ElectoralDistrictId'),
   text: contest.getIn(['FullText', 'Text', '__text']),
   id: contest.get('_objectId'),
   type: 'BallotMeasureContest',
   voteLimit: parseInt(contest.get('NumberElected') || 1),
-  options: getSelections(contest).map(option => fromJS({
+  options: getSelections(contest).map((option, optionIndex) => fromJS({
     name: option.getIn(['Selection', 'Text', '__text']),
-    id: option.get('_objectId')
-  }))
+    id: option.get('_objectId'),
+    index: optionIndex
+  })),
+  index
 });
 
 export const stitchTogetherContests = (contests, parties, candidates) => {
-  return contests.map(contest => {
+  return contests.map((contest, index) => {
     const type = contest.get('_xsi:type');
     if (type === 'PartyContest') {
-      return createPartyContestList(contest, parties);
+      return createPartyContestList(contest, parties, index);
     } else if (type === 'CandidateContest') {
-      return createCandidateContestList(contest, candidates, parties);
+      return createCandidateContestList(contest, candidates, parties, index);
     } else if (type === 'BallotMeasureContest') {
-      return createBallotMeatureContestList(contest);
+      return createBallotMeatureContestList(contest, index);
     } else {
-      console.error(`Unexpected contest type: ${type}`);
+      console.error(`$Contest #${index} - unexpected type: ${type}`);
       return null; // fail quietly
     }
   }).filter(contest => contest);

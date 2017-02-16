@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 
 import { constructReducers } from './boilerplate';
 import startingData from '../data/sample';
-import { stitchTogetherContests } from './munger';
+import { stitchTogetherContests } from '../data/munger';
 
 const settings = {
   _init: fromJS({ textSize: 'medium', colorScheme: 'full' }),
@@ -35,7 +35,7 @@ const contests = {
 
 const selections = {
   _init: fromJS([]),
-  SET_VOTE: (state, action) => state.set(action.contestIndex, fromJS(action.selections))
+  SET_VOTE: (state, action) => state.set(action.contestIndex, action.selections)
 };
 
 export const handlers = { errorMessage, contests, metaData, settings, selections };
