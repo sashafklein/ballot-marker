@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 
 import React from 'react';
-import { Text, View, ListView, ScrollView } from 'react-native';
+import { Text, View, ListView, ScrollView, TextInput } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { fromJS } from 'immutable';
 import { listOf, map, contains } from 'react-immutable-proptypes';
@@ -12,35 +12,55 @@ import { wrap } from '../../shared/wrap';
 import { setVote } from '../../store/actions';
 import { straightPartyVote } from '../../store/thunkActions';
 
+const rows = contest => {
+  const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
+  const rowArray = contest.get('options').toJS();
+  if (contest.get('type') === 'CandidateContest') {
+    rowArray.push('write-in');
+  }
+  return ds.cloneWithRows(rowArray);
+};
+
 // Export an unconnected version for testing
 export class Voter extends React.Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
-
     this.state = {
-      dataSource: ds.cloneWithRows(props.contest.get('options').toJS())
+      dataSource: rows(props.contest)
     };
   }
 
   componentWillReceiveProps(newProps) {
-    const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
     this.setState({
-      dataSource: ds.cloneWithRows(newProps.contest.get('options').toJS())
+      dataSource: rows(newProps.contest)
     });
   }
 
-  handleSelection(index) {
-    const { selections, contest, dispatch, gbs } = this.props;
-    const pushesAboveLimit = selections.size >= contest.get('voteLimit')
-                              && !selections.includes(index);
+  pushesAboveLimit(entry) {
+    const { selections, contest } = this.props;
 
-    if (pushesAboveLimit) {
-      const messages = [
-        <Text key={ 1 } style={ [gbs.t.p, gbs.t.bold] }>{ 'Uncheck the one you don\'t want.' }</Text>,
-        <Text key={ 0 } style={ [gbs.t.p] }>Then choose the one you do.</Text>
-      ];
-      Actions.oops({ messages });
+    return selections.size >= contest.get('voteLimit')
+      && (
+        typeof entry === 'string'
+          ? !(typeof selections.find(sel => typeof sel === 'string') === 'string')
+          : !selections.includes(entry)
+      );
+  }
+
+  raiseAboveLimitError() {
+    const { gbs } = this.props;
+    const messages = [
+      <Text key={ 1 } style={ [gbs.t.p, gbs.t.bold] }>{ 'Uncheck the one you don\'t want.' }</Text>,
+      <Text key={ 0 } style={ [gbs.t.p] }>Then choose the one you do.</Text>
+    ];
+    Actions.oops({ messages });
+  }
+
+  handleSelection(index) {
+    const { selections, contest, dispatch } = this.props;
+
+    if (this.pushesAboveLimit(index)) {
+      this.raiseAboveLimitError();
     } else {
       const priorIndex = selections.indexOf(index);
 
@@ -48,6 +68,20 @@ export class Voter extends React.Component {
         ? selections.push(index) // Add the item index
         : selections.delete(priorIndex); // Remove the item index (at priorIndex)
 
+      dispatch(setVote(contest.get('id'), nextSelections));
+    }
+  }
+
+  handleWritein(text) {
+    const { selections, contest, dispatch } = this.props;
+
+    if (this.pushesAboveLimit(text)) {
+      this.raiseAboveLimitError();
+    } else {
+      const priorIndex = selections.findIndex(sel => typeof sel === 'string');
+      const nextSelections = priorIndex === -1
+        ? selections.push(text) // Add the write-in text
+        : selections.set(priorIndex, text); // Update the write-in text
       dispatch(setVote(contest.get('id'), nextSelections));
     }
   }
@@ -115,13 +149,31 @@ export class Voter extends React.Component {
             <ListView
               style={ { flex: 1, flexDirection: 'column' }}
               dataSource={ this.state.dataSource }
-              renderRow={ opt => (
-                <VoterRow
-                  gbs={ gbs }
-                  selected={ selections.includes(opt.index) }
-                  { ...optionMapper(opt) }
-                />
-              ) }
+              renderRow={ opt => {
+                if (opt === 'write-in') {
+                  return (
+                    <TextInput
+                      onChangeText={ t => { this.handleWritein(t); } }
+                      onFocus={ () => {
+                        if (this.pushesAboveLimit('text')) {
+                          this.raiseAboveLimitError();
+                        }
+                      }}
+                      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                      multiline
+                      defaultValue="Touch here to write in another candidate"
+                      value={ this.state.writeIn }
+                    />
+                  );
+                } else {
+                  return (
+                    <VoterRow
+                      selected={ selections.includes(opt.index) }
+                      { ...optionMapper(opt) }
+                    />
+                  );
+                }
+              } }
             />
           </View>
         </ScrollView>
@@ -130,7 +182,7 @@ export class Voter extends React.Component {
   }
 }
 
-const { object, number, string, func, oneOf } = React.PropTypes;
+const { object, number, string, func, oneOf, oneOfType } = React.PropTypes;
 Voter.propTypes = {
   gbs: object,
   contest: contains({
@@ -141,7 +193,7 @@ Voter.propTypes = {
     type: oneOf(['PartyContest', 'CandidateContest', 'BallotMeasureContest']).isRequired
   }).isRequired,
   contestIndex: number.isRequired,
-  selections: listOf(number).isRequired,
+  selections: listOf(oneOfType([number, string])).isRequired,
   dispatch: func.isRequired
 };
 

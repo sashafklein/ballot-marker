@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-import Button from '../../shared/components/Button';
+import PageWithActions from '../../shared/components/PageWithActions';
 
 import { wrap } from '../../shared/wrap';
 
@@ -16,7 +16,7 @@ export const Oops = ({ messages, gbs }) => {
   </Text>;
 
   return (
-    <View style={ { flex: 1, height: gbs.s.percHeigh100 } }>
+    <PageWithActions back="Close" next={ null } onBack={ Actions.pop }>
       <View style={ gbs.l.centeredContainer }>
         {
           messages.map((msg, ind) => (
@@ -25,18 +25,8 @@ export const Oops = ({ messages, gbs }) => {
               : msg
           ))
         }
-        <Button
-          onPress={ () => {
-            Actions.pop();
-          } }
-          addStyles={ {
-            button: [gbs.l.button, { backgroundColor: gbs.c.green }]
-          } }
-        >
-          Close
-        </Button>
       </View>
-    </View>
+    </PageWithActions>
   );
 };
 
