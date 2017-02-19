@@ -12,6 +12,7 @@ import ElectionDetails from '../bundles/ElectionDetails';
 
 export default Actions.create(
   <Scene key="root">
+    <Scene key="voter" component={ Voter } title="Voter" />
     <Scene key="launch" component={ Launch } title="Launch" />
     <Scene key="language" component={ Language } title="Language" />
     <Scene key="oops" component={ Oops } title="Oops" />
@@ -19,6 +20,5 @@ export default Actions.create(
     <Scene key="settings" component={ Settings } title="Text Size" />
     <Scene key="instructions" component={ Instructions } title="Instructions" />
     <Scene key="electionDetails" component={ ElectionDetails } title="ElectionDetails" />
-    <Scene key="voter" component={ Voter } title="Voter" />
   </Scene>
 );

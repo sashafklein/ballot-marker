@@ -6,9 +6,9 @@ import { reactotronRedux } from 'reactotron-redux';
 import promiseMiddleware from './middlewares/promiseMiddleware';
 import reducers from './reducers';
 
-Reactotron.configure()
-  .use(reactotronRedux())
-  .connect({ name: 'Ballot Marker' });
+// Reactotron.configure()
+//   .use(reactotronRedux())
+//   .connect({ name: 'Ballot Marker' });
 
 const enhancer = compose(
   applyMiddleware(
@@ -19,7 +19,7 @@ const enhancer = compose(
 );
 
 export default function configureStore(initialState) {
-  const storeCreator = __DEV__ ? Reactotron.createStore : createStore;
+  const storeCreator = __DEV__ ? createStore : createStore;
 
   const store = storeCreator(
     combineReducers({ ...reducers }),

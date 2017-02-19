@@ -16,27 +16,35 @@ const scaleText = base => {
 export default {
   // Size
   h1: {
-    fontSize: scaleText(27)
+    fontSize: scaleText(25)
   },
 
   h2: {
-    fontSize: scaleText(23)
+    fontSize: scaleText(22)
   },
 
   h3: {
     fontSize: scaleText(20)
   },
 
-  p: {
+  h4: {
     fontSize: scaleText(18)
   },
 
+  p: {
+    fontSize: scaleText(16)
+  },
+
   small: {
-    fontSize: scaleText(15)
+    fontSize: scaleText(14)
   },
 
   // Weight
   bold: {
     fontWeight: 'bold'
   },
+
+  wrap: {
+    flexWrap: 'wrap'
+  }
 };

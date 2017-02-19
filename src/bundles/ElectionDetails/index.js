@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { list } from 'react-immutable-proptypes';
 
 import PageWithActions from '../../shared/components/PageWithActions';
 import { wrap } from '../../shared/wrap';
@@ -11,7 +12,11 @@ import { getTitle } from '../../shared/utils/election';
 // Export an unconnected version for testing
 export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
   return (
-    <PageWithActions onBack={ Actions.pop }>
+    <PageWithActions
+      onBack={ Actions.pop }
+      onNext={ () => { Actions.voter({ contestIndex: 0 }); } }
+      next="Begin Voting"
+    >
       <View style={ gbs.l.centeredContainer }>
         <ScrollView>
           <View style={ gbs.w.mv10 }>
@@ -47,22 +52,22 @@ export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
   );
 };
 
-const { string, object, array } = React.PropTypes;
+const { string, object } = React.PropTypes;
 ElectionDetails.propTypes = {
   gbs: object,
   type: string,
   date: string,
   city: string,
   area: string,
-  contests: array
+  contests: list
 };
 
 const mapStateToProps = state => ({
-  type: state.data.getIn(['Election', 'Type']),
-  date: state.data.getIn(['Election', 'Name', 'Text', '__text']).split(' ').filter(el => isDateElement(el)).join(' '),
-  city: state.data.getIn(['Issuer']),
-  area: state.data.getIn(['IssuerAbbreviation']),
-  contests: state.data.getIn(['Election', 'ContestCollection', 'Contest'])
+  type: state.metaData.get('type'),
+  date: state.metaData.get('fullTitle').split(' ').filter(el => isDateElement(el)).join(' '),
+  city: state.metaData.get('city'),
+  area: state.metaData.get('area'),
+  contests: state.contests
 });
 
 export default wrap(mapStateToProps)(ElectionDetails);
