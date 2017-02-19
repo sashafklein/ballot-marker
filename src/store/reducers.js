@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+import { pick } from 'lodash';
 
 import { constructReducers } from './boilerplate';
 import startingData from '../data/sample';
@@ -34,8 +35,12 @@ const contests = {
 };
 
 const selections = {
-  _init: fromJS([]),
-  SET_VOTE: (state, action) => state.set(action.contestIndex, action.selections)
+  _init: fromJS({}),
+  SET_VOTE: (state, action) => state.set(action.contestID, fromJS(action.selections)),
+  SET_VOTES: (state, action) => {
+    const newState = state.merge(action.votes);
+    return newState;
+  }
 };
 
 export const handlers = { errorMessage, contests, metaData, settings, selections };

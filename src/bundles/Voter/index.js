@@ -4,13 +4,13 @@ import React from 'react';
 import { Text, View, ListView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { fromJS } from 'immutable';
-import { list } from 'react-immutable-proptypes';
+import { listOf, map, contains } from 'react-immutable-proptypes';
 
 import PageWithActions from '../../shared/components/PageWithActions';
 import VoterRow from './VoterRow';
 import { wrap } from '../../shared/wrap';
 import { setVote } from '../../store/actions';
-import optMap from './optMap';
+import { straightPartyVote } from '../../store/thunkActions';
 
 // Export an unconnected version for testing
 export class Voter extends React.Component {
@@ -19,14 +19,22 @@ export class Voter extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
 
     this.state = {
-      dataSource: ds.cloneWithRows(props.options.toJS())
+      dataSource: ds.cloneWithRows(props.contest.get('options').toJS())
     };
   }
 
-  handleSelection(index) {
-    const { selections, voteLimit, dispatch, contestIndex, gbs } = this.props;
+  componentWillReceiveProps(newProps) {
+    const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
+    this.setState({
+      dataSource: ds.cloneWithRows(newProps.contest.get('options').toJS())
+    });
+  }
 
-    if (selections.size >= voteLimit) {
+  handleSelection(index) {
+    const { selections, contest, dispatch, gbs } = this.props;
+    const pushesAboveLimit = selections.size >= contest.get('voteLimit')
+                              && !selections.includes(index);
+    if (pushesAboveLimit) {
       const messages = [
         <Text key={ 1 } style={ [gbs.t.p, gbs.t.bold] }>{ 'Uncheck the one you don\'t want.' }</Text>,
         <Text key={ 0 } style={ [gbs.t.p] }>Then choose the one you do.</Text>
@@ -34,31 +42,49 @@ export class Voter extends React.Component {
       Actions.oops({ messages });
     } else {
       const priorIndex = selections.indexOf(index);
+
       const nextSelections = priorIndex !== -1
         ? selections.delete(index)
         : selections.push(index);
 
-      dispatch(setVote(contestIndex, nextSelections));
+      dispatch(setVote(contest.get('id'), nextSelections));
     }
   }
 
   render() {
-    const { gbs, name, voteLimit, contestType, selections } = this.props;
-    const optionMapper = optMap[contestType];
+    const { gbs, contest, selections, dispatch, contestIndex } = this.props;
+
+    const optionMapper = {
+      PartyContest: option => {
+        return {
+          title: option.name,
+          onValueChange: newVal => {
+            this.handleSelection(option.index);
+            dispatch(straightPartyVote(option.id, newVal));
+          }
+        };
+      }
+    }[contest.get('type')];
+
     return (
-      <PageWithActions onBack={ Actions.pop }>
+      <PageWithActions
+        onBack={ Actions.pop }
+        onNext={ () => Actions.voter({ contestIndex: contestIndex + 1 }) }
+      >
         <View style={ gbs.l.centeredContainer }>
-          <Text style={ [gbs.t.h1, gbs.l.h1] }>{ name }</Text>
-          <Text style={ [gbs.t.h1, gbs.l.h1] }>Select { voteLimit }</Text>
+          <Text style={ [gbs.t.h1, gbs.l.h1] }>{ contest.get('name') }</Text>
+          <Text style={ [gbs.t.h1, gbs.l.h1] }>Select { contest.get('voteLimit') }</Text>
           <ListView
             dataSource={ this.state.dataSource }
             renderRow={ opt => {
-              return <VoterRow
-                onValueChange={ () => { this.handleSelection(opt.index); } }
-                gbs={ gbs }
-                selected={ selections.get(opt.index) }
-                { ...optionMapper(opt) }
-              />
+              // if (selections.size) debugger;
+              return (
+                <VoterRow
+                  gbs={ gbs }
+                  selected={ selections.includes(opt.index) }
+                  { ...optionMapper(opt) }
+                />
+              );
             } }
           />
         </View>
@@ -67,32 +93,30 @@ export class Voter extends React.Component {
   }
 }
 
-const { object, number, string, func } = React.PropTypes;
+const { object, number, string, func, oneOf } = React.PropTypes;
 Voter.propTypes = {
   gbs: object,
-  options: list,
-  selections: list,
-  voteLimit: number,
-  contestIndex: number,
-  name: string,
-  dispatch: func,
-  contestType: string
-};
-
-Voter.defaultProps = {
-  contestIndex: 0
+  contest: contains({
+    options: listOf(map),
+    voteLimit: number.isRequired,
+    name: string.isRequired,
+    id: string.isRequired,
+    type: oneOf(['PartyContest', 'CandidateContest', 'BallotMeasureContest']).isRequired
+  }).isRequired,
+  contestIndex: number.isRequired,
+  selections: listOf(number).isRequired,
+  dispatch: func.isRequired
 };
 
 const mapStateToProps = (state, props) => {
-  const selections = state.selections.get(props.contestIndex || 0) || fromJS([]);
-  const contest = state.contests.get(props.contextIndex || 0);
+  const contestIndex = props.contestIndex || 0;
+  const contest = state.contests.get(contestIndex);
+  const selections = state.selections.get(contest.get('id')) || fromJS([]);
 
   return {
     selections,
-    voteLimit: contest.get('voteLimit'),
-    name: contest.get('Name'),
-    options: contest.get('options'),
-    contestType: contest.get('type')
+    contest,
+    contestIndex
   };
 };
 

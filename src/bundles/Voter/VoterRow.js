@@ -5,12 +5,13 @@ import { kebabCase } from 'lodash';
 import { wrap } from '../../shared/wrap';
 
 export const VoterRow = ({ title, subtitle, selected, onValueChange, gbs }) => {
+  // debugger
   return (
     <View>
       <Switch
         value={ selected }
-        onValueChange={ onValueChange }
-        testID={ kebabCase(title) }
+        onValueChange={ () => { onValueChange(!selected); } }
+        testID={ title }
       />
       <Text style={ gbs.t.h4 }>{ title }</Text>
       <Text style={ gbs.t.p }>{ subtitle }</Text>
