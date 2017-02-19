@@ -90,7 +90,7 @@ export class Voter extends React.Component {
         colorKey: 'lightGrey'
       },
       {
-        onPress: () => { console.log("what") },
+        onPress: Actions.reviewVotes,
         content: 'Review Votes',
         colorKey: 'lightGrey'
       }
@@ -146,7 +146,7 @@ Voter.propTypes = {
 };
 
 const mapStateToProps = (state, props) => {
-  const contestIndex = props.contestIndex || 53;
+  const contestIndex = props.contestIndex || 0;
   const contest = state.contests.get(contestIndex);
   const selections = state.selections.get(contest.get('id')) || fromJS([]);
 
