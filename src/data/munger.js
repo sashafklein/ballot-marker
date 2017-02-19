@@ -5,6 +5,10 @@ import { Map, fromJS } from 'immutable';
 const partyNamePath = ['Name', 'Text', '__text'];
 const candidateNamePath = ['BallotName', 'Text', '__text'];
 
+const formatName = name => name.split(' ')
+  .map(s => [s.slice(0, 1), s.slice(1, s.length).toLowerCase()].join(''))
+  .join(' ');
+
 const optionFromSelection = (selection, list, selectionNamePath, objectPath, optionExtra, index) => {
   if (!selection.getIn) {
     return null; // TODO figure out how to handle bad data like candidate-62 contest
@@ -54,7 +58,7 @@ const createPartyContestList = (contest, parties, index) => {
       selectionIndex
     )).filter(option => option),
     type: contest.get('_xsi:type'),
-    name: contest.get('Name'),
+    name: formatName(contest.get('Name')),
     id: contest.get('_objectId'),
     voteLimit: parseInt(contest.get('NumberElected') || 1),
     electoralDistrictID: contest.get('ElectoralDistrictId'),
@@ -85,14 +89,14 @@ const createCandidateContestList = (contest, candidates, parties, index) => {
     )).filter(option => option),
     id: contest.get('_objectId'),
     type: contest.get('_xsi:type'),
-    name: contest.get('Name'),
+    name: formatName(contest.get('Name')),
     voteLimit: parseInt(contest.get('NumberElected') || 1),
     index
   });
 };
 
 const createBallotMeatureContestList = (contest, index) => fromJS({
-  name: contest.get('Name'),
+  name: formatName(contest.get('Name')),
   electoralDistrictID: contest.get('ElectoralDistrictId'),
   text: contest.getIn(['FullText', 'Text', '__text']),
   id: contest.get('_objectId'),

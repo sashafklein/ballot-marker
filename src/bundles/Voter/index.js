@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 
 import React from 'react';
-import { Text, View, ListView } from 'react-native';
+import { Text, View, ListView, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { fromJS } from 'immutable';
 import { listOf, map, contains } from 'react-immutable-proptypes';
@@ -34,6 +34,7 @@ export class Voter extends React.Component {
     const { selections, contest, dispatch, gbs } = this.props;
     const pushesAboveLimit = selections.size >= contest.get('voteLimit')
                               && !selections.includes(index);
+
     if (pushesAboveLimit) {
       const messages = [
         <Text key={ 1 } style={ [gbs.t.p, gbs.t.bold] }>{ 'Uncheck the one you don\'t want.' }</Text>,
@@ -43,9 +44,9 @@ export class Voter extends React.Component {
     } else {
       const priorIndex = selections.indexOf(index);
 
-      const nextSelections = priorIndex !== -1
-        ? selections.delete(index)
-        : selections.push(index);
+      const nextSelections = priorIndex === -1
+        ? selections.push(index) // Add the item index
+        : selections.delete(priorIndex); // Remove the item index (at priorIndex)
 
       dispatch(setVote(contest.get('id'), nextSelections));
     }
@@ -55,39 +56,56 @@ export class Voter extends React.Component {
     const { gbs, contest, selections, dispatch, contestIndex } = this.props;
 
     const optionMapper = {
-      PartyContest: option => {
-        return {
-          title: option.name,
-          onValueChange: newVal => {
-            this.handleSelection(option.index);
-            dispatch(straightPartyVote(option.id, newVal));
-          }
-        };
-      }
+      PartyContest: option => ({
+        title: option.name,
+        onValueChange: newVal => {
+          this.handleSelection(option.index);
+          dispatch(straightPartyVote(option.id, newVal));
+        }
+      }),
+      CandidateContest: option => ({
+        title: option.name,
+        subtitle: option.partyName,
+        onValueChange: () => this.handleSelection(option.index)
+      }),
+      BallotMeasureContest: option => ({
+        title: option.name,
+        onValueChange: () => this.handleSelection(option.index)
+      })
     }[contest.get('type')];
+
+    const instructions = {
+      BallotMeasureContest: 'Select Yes or No'
+    }[contest.get('type')] || `Select ${contest.get('voteLimit')}`;
 
     return (
       <PageWithActions
         onBack={ Actions.pop }
         onNext={ () => Actions.voter({ contestIndex: contestIndex + 1 }) }
       >
-        <View style={ gbs.l.centeredContainer }>
-          <Text style={ [gbs.t.h1, gbs.l.h1] }>{ contest.get('name') }</Text>
-          <Text style={ [gbs.t.h1, gbs.l.h1] }>Select { contest.get('voteLimit') }</Text>
-          <ListView
-            dataSource={ this.state.dataSource }
-            renderRow={ opt => {
-              // if (selections.size) debugger;
-              return (
+        <ScrollView>
+          <View style={ gbs.l.centeredContainer }>
+            <View style={ gbs.l.h1 }>
+              <Text style={ [gbs.t.h4, gbs.l.p] }>{ contest.get('name') }</Text>
+              <Text style={ [gbs.t.p] }>{ instructions }</Text>
+              {
+                contest.get('text') &&
+                  <Text style={ [gbs.t.small, gbs.l.p] }>{ contest.get('text') }</Text>
+              }
+            </View>
+            <ListView
+              style={ { flex: 1, flexDirection: 'column' }}
+              dataSource={ this.state.dataSource }
+              renderRow={ opt => (
                 <VoterRow
                   gbs={ gbs }
                   selected={ selections.includes(opt.index) }
                   { ...optionMapper(opt) }
                 />
-              );
-            } }
-          />
-        </View>
+              ) }
+            />
+          </View>
+        </ScrollView>
       </PageWithActions>
     );
   }
@@ -109,7 +127,7 @@ Voter.propTypes = {
 };
 
 const mapStateToProps = (state, props) => {
-  const contestIndex = props.contestIndex || 0;
+  const contestIndex = props.contestIndex || 53;
   const contest = state.contests.get(contestIndex);
   const selections = state.selections.get(contest.get('id')) || fromJS([]);
 
