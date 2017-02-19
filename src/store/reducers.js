@@ -1,5 +1,4 @@
 import { fromJS } from 'immutable';
-import { pick } from 'lodash';
 
 import { constructReducers } from './boilerplate';
 import startingData from '../data/sample';

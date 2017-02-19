@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import reduxThunkMiddleware from 'redux-thunk';
-import Reactotron from 'reactotron-react-native';
-import { reactotronRedux } from 'reactotron-redux';
+// import Reactotron from 'reactotron-react-native';
+// import { reactotronRedux } from 'reactotron-redux';
 
 import promiseMiddleware from './middlewares/promiseMiddleware';
 import reducers from './reducers';
