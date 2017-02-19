@@ -3,10 +3,10 @@ import { View } from 'react-native';
 import NavButton from './NavButton';
 import { wrap } from '../wrap';
 
-export const ButtonBar = ({ items, gbs }) => {
+export const ButtonBar = ({ items, gbs, style, buttonStyle, textStyle }) => {
   if (items && items.length) {
     return (
-      <View style={ { height: gbs.s.percHeight10 } }>
+      <View style={ [{ height: gbs.s.percHeight10 }, style] }>
         <View
           style={ {
             flex: 1,
@@ -19,6 +19,8 @@ export const ButtonBar = ({ items, gbs }) => {
             items.map((item, index) => (
               <NavButton
                 key={ index }
+                textStyle={ textStyle }
+                buttonStyle={ buttonStyle }
                 { ...item }
               />
             ))
@@ -31,10 +33,13 @@ export const ButtonBar = ({ items, gbs }) => {
   }
 };
 
-const { object, array } = React.PropTypes;
+const { object, array, oneOfType } = React.PropTypes;
 ButtonBar.propTypes = {
   gbs: object,
-  items: array
+  items: array,
+  style: object,
+  buttonStyle: oneOfType([object, array]),
+  textStyle: oneOfType([object, array])
 };
 
 export default wrap()(ButtonBar);

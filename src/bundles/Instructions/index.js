@@ -7,14 +7,19 @@ import TextManifest from '../../shared/components/TextManifest';
 import { wrap } from '../../shared/wrap';
 
 // Export an unconnected version for testing
-export const Instructions = ({ gbs }) => {
+export const Instructions = ({ gbs, showNext }) => {
+  let headerItems;
+  if (showNext) {
+    headerItems = [{
+      content: 'Settings', onPress: () => Actions.settings({ fromVote: true }), colorKey: 'green'
+    }];
+  }
   return (
     <PageWithActions
       onBack={ Actions.pop }
-      onNext={ Actions.electionDetails }
-      headerItems={
-        [{ content: 'Settings', onPress: () => Actions.settings({ fromVote: true }), colorKey: 'green' }]
-      }
+      onNext={ showNext ? Actions.electionDetails : undefined }
+      headerItems={ headerItems }
+      next={ showNext ? 'Next' : null }
     >
       <View style={ gbs.l.centeredContainer }>
         <ScrollView>
@@ -33,9 +38,14 @@ export const Instructions = ({ gbs }) => {
   );
 };
 
-const { object } = React.PropTypes;
+const { object, bool } = React.PropTypes;
 Instructions.propTypes = {
-  gbs: object
+  gbs: object,
+  showNext: bool
+};
+
+Instructions.defaultProps = {
+  showNext: true
 };
 
 export default wrap()(Instructions);
