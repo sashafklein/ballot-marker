@@ -17,15 +17,17 @@ export const Button = ({ onPress, children, replaceStyles, addStyles, gbs }) => 
       color: gbs.c.white,
       alignSelf: 'center',
       fontSize: gbs.t.h3.fontSize,
+      textDecorationLine: 'none'
     }
   };
 
   const combiner = styleCombiner(defaultStyles, addStyles, replaceStyles);
+
   return (
     <Link
       onPress={ onPress }
       activeOpacity={ 0.8 }
-      replaceStyles={ {
+      addStyles={ {
         link: combiner('button'),
         text: combiner('text')
       } }

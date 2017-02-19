@@ -49,9 +49,8 @@ export class LanguageList extends React.Component {
   }
 }
 
-const { func, object } = React.PropTypes;
+const { object } = React.PropTypes;
 LanguageList.propTypes = {
-  dispatch: func,
   gbs: object
 };
 

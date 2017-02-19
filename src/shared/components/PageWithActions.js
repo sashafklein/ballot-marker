@@ -18,13 +18,16 @@ export const PageWithActions = props => {
   const footerHeight = footerExists ? gbs.s.percHeight10 : 0;
   // debugger
   const viewStyles = {
-    height: gbs.s.percHeight100 - headerHeight - footerHeight - baseTopPadding,
-    marginTop: headerHeight + baseTopPadding
+    height: gbs.s.percHeight100 - headerHeight - footerHeight - baseTopPadding
   };
-  console.log(viewStyles)
+
   return (
     <View>
-      <ButtonBar items={ headerItems } />
+      <View style={{ marginTop: baseTopPadding }} />
+      <ButtonBar
+        items={ headerItems }
+        textStyle={ [gbs.t.small, { alignSelf: 'center', textDecorationLine: 'none' }] }
+      />
       <View style={ viewStyles }>
         { children }
       </View>

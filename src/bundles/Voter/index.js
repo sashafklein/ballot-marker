@@ -78,10 +78,29 @@ export class Voter extends React.Component {
       BallotMeasureContest: 'Select Yes or No'
     }[contest.get('type')] || `Select ${contest.get('voteLimit')}`;
 
+    const headerItems = [
+      {
+        onPress: () => Actions.settings({ fromVote: true }),
+        content: 'Settings',
+        colorKey: 'lightGrey'
+      },
+      {
+        onPress: () => Actions.instructions({ showNext: false }),
+        content: 'Help',
+        colorKey: 'lightGrey'
+      },
+      {
+        onPress: Actions.reviewVotes,
+        content: 'Review Votes',
+        colorKey: 'lightGrey'
+      }
+    ];
+
     return (
       <PageWithActions
         onBack={ Actions.pop }
         onNext={ () => Actions.voter({ contestIndex: contestIndex + 1 }) }
+        headerItems={ headerItems }
       >
         <ScrollView>
           <View style={ gbs.l.centeredContainer }>
@@ -127,7 +146,7 @@ Voter.propTypes = {
 };
 
 const mapStateToProps = (state, props) => {
-  const contestIndex = props.contestIndex || 53;
+  const contestIndex = props.contestIndex || 0;
   const contest = state.contests.get(contestIndex);
   const selections = state.selections.get(contest.get('id')) || fromJS([]);
 

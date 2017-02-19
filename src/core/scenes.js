@@ -9,6 +9,7 @@ import Settings from '../bundles/Settings';
 import Instructions from '../bundles/Instructions';
 import Voter from '../bundles/Voter';
 import ElectionDetails from '../bundles/ElectionDetails';
+import ReviewVotes from '../bundles/ReviewVotes';
 
 export default Actions.create(
   <Scene key="root">
@@ -20,5 +21,6 @@ export default Actions.create(
     <Scene key="settings" component={ Settings } title="Text Size" />
     <Scene key="instructions" component={ Instructions } title="Instructions" />
     <Scene key="electionDetails" component={ ElectionDetails } title="ElectionDetails" />
+    <Scene key="reviewVotes" component={ ReviewVotes } title="ReviewVotes" />
   </Scene>
 );
