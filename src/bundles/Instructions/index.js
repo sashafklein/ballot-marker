@@ -11,7 +11,7 @@ export const Instructions = ({ gbs, showNext }) => {
   let headerItems;
   if (showNext) {
     headerItems = [{
-      content: 'Settings', onPress: () => Actions.settings({ fromVote: true }), colorKey: 'green'
+      content: 'Settings', onPress: () => Actions.settings({ fromVote: true }), colorKey: 'flat'
     }];
   }
   return (

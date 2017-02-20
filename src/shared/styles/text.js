@@ -16,32 +16,38 @@ const scaleText = base => {
 export default {
   // Size
   h1: {
-    fontSize: scaleText(25)
-  },
-
-  h2: {
+    fontFamily: 'Avenir',
     fontSize: scaleText(22)
   },
 
-  h3: {
+  h2: {
+    fontFamily: 'Avenir',
     fontSize: scaleText(20)
   },
 
-  h4: {
+  h3: {
+    fontFamily: 'Avenir',
     fontSize: scaleText(18)
   },
 
-  p: {
+  h4: {
+    fontFamily: 'Avenir',
     fontSize: scaleText(16)
   },
 
-  small: {
+  p: {
+    fontFamily: 'Avenir',
     fontSize: scaleText(14)
+  },
+
+  small: {
+    fontFamily: 'Avenir',
+    fontSize: scaleText(10)
   },
 
   // Weight
   bold: {
-    fontWeight: 'bold'
+    fontFamily: 'Avenir-Heavy'
   },
 
   wrap: {

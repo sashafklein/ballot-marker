@@ -11,8 +11,8 @@ export const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacit
       textAlign: 'center',
       textDecorationLine: 'underline',
       textDecorationStyle: 'solid',
-      textDecorationColor: gbs.c.black,
-      color: gbs.c.black,
+      textDecorationColor: gbs.c.buttonText,
+      color: gbs.c.buttonText,
       alignSelf: 'center',
     },
     link: {

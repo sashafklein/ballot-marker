@@ -36,7 +36,7 @@ export class LanguageList extends React.Component {
                   marginVertical: 20,
                   height: gbs.s.percHeight10
                 }, rowData.name === 'English' && {
-                  backgroundColor: gbs.c.green
+                  backgroundColor: gbs.c.positive
                 }]
               }}
             >

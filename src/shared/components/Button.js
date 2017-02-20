@@ -7,17 +7,21 @@ import Link from './Link';
 
 export const Button = ({ onPress, children, replaceStyles, addStyles, gbs }) => {
   const defaultStyles = {
-    button: {
-      backgroundColor: gbs.c.black,
+    button: [{
+      backgroundColor: gbs.c.buttonBg,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-    },
+      height: gbs.s.percHeight10,
+      borderRadius: 10,
+    }, gbs.l.border(2, gbs.c.buttonBorder)],
     text: {
-      color: gbs.c.white,
+      color: gbs.c.buttonText,
       alignSelf: 'center',
       fontSize: gbs.t.h3.fontSize,
-      textDecorationLine: 'none'
+      textDecorationLine: 'none',
+      fontFamily: 'Avenir',
+      fontWeight: 'bold'
     }
   };
 

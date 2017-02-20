@@ -5,16 +5,17 @@ import { wrap } from '../wrap';
 export const NavButton = ({ onPress, content, colorKey, gbs, textStyle, buttonStyle }) => (
   <Button
     onPress={ onPress || (() => {})}
-    replaceStyles={ {
+    addStyles={ {
       button: [
         {
-          height: gbs.s.percHeight10,
+          height: gbs.s.percHeight10 - 10,
           alignSelf: 'center',
           justifyContent: 'center',
           flex: 1,
+          marginVertical: 5
         },
         { backgroundColor: gbs.c[colorKey] },
-        onPress ? {} : { backgroundColor: gbs.c.lightGrey },
+        onPress ? {} : { backgroundColor: gbs.c.flat },
         buttonStyle
       ],
       text: [textStyle]

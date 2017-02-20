@@ -20,16 +20,18 @@ export const Headset = ({ dispatch, screenOff, gbs }) => {
         <Text style={ [gbs.t.p] }>
           For privacy while using the audio ballot, turn the screen off.
         </Text>
-        <Button
-          onPress={ () => dispatch(changeSetting('screenOff', !screenOff)) }
-          addStyles={ {
-            button: [gbs.l.button, {
-              width: gbs.s.percWidth70
-            }]
-          } }
+        <View
+          style={ [{ height: gbs.s.percHeight10, backgroundColor: gbs.c.buttonBg }, gbs.w.mv10] }
         >
-          { `Turn the screen ${screenOff ? 'on' : 'off'}` }
-        </Button>
+          <Button
+            onPress={ () => dispatch(changeSetting('screenOff', !screenOff)) }
+            addStyles={ {
+              button: [gbs.l.button]
+            } }
+          >
+            { `Turn the screen ${screenOff ? 'on' : 'off'}` }
+          </Button>
+        </View>
         <Text style={ [gbs.t.p] }>If you use a special keyboard, attach it now.</Text>
       </View>
     </PageWithActions>

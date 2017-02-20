@@ -116,17 +116,17 @@ export class Voter extends React.Component {
       {
         onPress: () => Actions.settings({ fromVote: true }),
         content: 'Settings',
-        colorKey: 'lightGrey'
+        colorKey: 'flat'
       },
       {
         onPress: () => Actions.instructions({ showNext: false }),
         content: 'Help',
-        colorKey: 'lightGrey'
+        colorKey: 'flat'
       },
       {
         onPress: Actions.reviewVotes,
         content: 'Review Votes',
-        colorKey: 'lightGrey'
+        colorKey: 'flat'
       }
     ];
 
@@ -143,7 +143,7 @@ export class Voter extends React.Component {
               <Text style={ [gbs.t.p] }>{ instructions }</Text>
               {
                 contest.get('text') &&
-                  <Text style={ [gbs.t.small, gbs.l.p] }>{ contest.get('text') }</Text>
+                  <Text style={ [gbs.t.p, gbs.l.p] }>{ contest.get('text') }</Text>
               }
             </View>
             <ListView
@@ -154,12 +154,12 @@ export class Voter extends React.Component {
                   return (
                     <TextInput
                       onChangeText={ t => { this.handleWritein(t); } }
+                      style={ [gbs.t.p, { fontFamily: 'Avenir', minHeight: 40, borderColor: gbs.c.flat, borderWidth: 1 }] }
                       onFocus={ () => {
                         if (this.pushesAboveLimit('text')) {
                           this.raiseAboveLimitError();
                         }
                       }}
-                      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                       multiline
                       defaultValue="Touch here to write in another candidate"
                       value={ this.state.writeIn }

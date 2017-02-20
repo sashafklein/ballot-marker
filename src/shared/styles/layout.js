@@ -10,7 +10,7 @@ export default {
     marginHorizontal: size.percWidth5
   },
   button: {
-    height: 50,
+    height: size.percHeight10,
     width: size.percWidth70,
     marginVertical: 20
   },

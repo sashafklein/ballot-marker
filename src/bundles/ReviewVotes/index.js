@@ -13,7 +13,7 @@ export class ReviewVotes extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
 
     this.state = {
-      dataSource: ds.cloneWithRows(props.contests.toJS())
+      dataSource: ds.cloneWithRows(props.contests.filter(c => c.type !== 'PartyContest').toJS())
     };
   }
 
@@ -23,12 +23,12 @@ export class ReviewVotes extends React.Component {
       {
         onPress: () => Actions.settings({ fromVote: true }),
         content: 'Settings',
-        colorKey: 'lightGrey'
+        colorKey: 'flat'
       },
       {
         onPress: () => Actions.instructions({ showNext: false }),
         content: 'Help',
-        colorKey: 'lightGrey'
+        colorKey: 'flat'
       },
     ];
 
@@ -41,8 +41,8 @@ export class ReviewVotes extends React.Component {
         <ScrollView>
           <View style={ gbs.l.centeredContainer }>
             <View style={ gbs.l.h1 }>
-              <Text style={ [gbs.t.p, gbs.t.bold] }>
-                { 'Review what you\'re voting for' }
+              <Text style={ [gbs.t.h4, gbs.t.bold] }>
+                { 'Review what you\'re voting for.' }
               </Text>
               <Text style={ [gbs.t.p, gbs.t.bold] }>
                 This screen shows everything you voted for.
@@ -70,24 +70,30 @@ export class ReviewVotes extends React.Component {
                     choices.push({ name: writeIn });
                   }
                   return (
-                    <View key={ contest.id } style={ gbs.w.mv10 }>
-                      { title }
-                      {
-                        choices.map((choice, index) => (
-                          <View key={ index }>
-                            <Text
-                              style={ gbs.t.p }
-                            >
-                              { choice.name }
-                            </Text>
-                            {
-                              choice.partyName &&
-                              <Text style={ gbs.t.small }>{ choice.partyName.toUpperCase() }</Text>
-                            }
-                          </View>
-                        ))
-                      }
-                    </View>
+                    <TouchableWithoutFeedback
+                      onPress={ () => { Actions.voter({ contestIndex: contest.index }); }}
+                    >
+                      <View key={ contest.id } style={ gbs.w.mv10 }>
+                        { title }
+                        {
+                          choices.map((choice, index) => (
+                            <View key={ index }>
+                              <Text
+                                style={ gbs.t.p }
+                              >
+                                { choice.name }
+                              </Text>
+                              {
+                                choice.partyName &&
+                                <Text style={ gbs.t.small }>
+                                  { choice.partyName.toUpperCase() }
+                                </Text>
+                              }
+                            </View>
+                          ))
+                        }
+                      </View>
+                    </TouchableWithoutFeedback>
                   );
                 } else {
                   return (

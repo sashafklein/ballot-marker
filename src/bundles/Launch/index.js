@@ -14,13 +14,13 @@ export const Launch = ({ type, fullTitle, gbs }) => {
   return (
     <PageWithActions onNext={ Actions.headset } next="Start" back={ null }>
       <View style={ [gbs.l.centeredContainer] }>
-        <Text style={ [gbs.t.h1, gbs.l.h1, gbs.w.mb10, { color: gbs.c.black } ]}>
+        <Text style={ [gbs.t.h1, gbs.l.h1, gbs.w.mb10, { color: gbs.c.text } ]}>
           Official Ballot
         </Text>
-        <Text style={ [gbs.t.h1, gbs.l.h1, { color: gbs.c.black } ]}>
+        <Text style={ [gbs.t.h1, gbs.l.h1, { color: gbs.c.text } ]}>
           { getTitle(type) }
         </Text>
-        <Text style={ [gbs.t.h1, gbs.l.h1, { color: gbs.c.black } ]}>
+        <Text style={ [gbs.t.h1, gbs.l.h1, { color: gbs.c.text } ]}>
           { date }
         </Text>
       </View>

@@ -9,10 +9,10 @@ import TextSizeButton from './TextSizeButton';
 import { changeSetting } from '../../store/actions';
 import { wrap } from '../../shared/wrap';
 
-const colorSchemes = ['Full', 'High Contrast', 'Low Contrast', 'Black White'];
+const colorSchemes = ['Full', 'High Contrast', 'Low Contrast', 'Black and White'];
 
 // Export an unconnected version for testing
-export const Settings = ({ gbs, fromVote, dispatch }) => {
+export const Settings = ({ gbs, fromVote, dispatch, colorScheme }) => {
   return (
     <PageWithActions
       onBack={ Actions.pop }
@@ -37,8 +37,18 @@ export const Settings = ({ gbs, fromVote, dispatch }) => {
               <Button
                 key={ index }
                 addStyles={ {
-                  button: gbs.l.button,
-                  text: gbs.t.p
+                  button: [
+                    gbs.l.button,
+                    {
+                      backgroundColor: _.camelCase(scheme) === colorScheme
+                        ? gbs.c.buttonBg
+                        : gbs.c.flat
+                    }
+                  ],
+                  text: [
+                    gbs.t.p,
+                    { color: gbs.c.buttonText }
+                  ]
                 } }
                 onPress={ () => { dispatch(changeSetting('colorScheme', _.camelCase(scheme))); } }
               >
@@ -52,12 +62,17 @@ export const Settings = ({ gbs, fromVote, dispatch }) => {
   );
 };
 
-const { object, bool, func } = React.PropTypes;
+const { object, bool, func, string } = React.PropTypes;
 Settings.propTypes = {
   gbs: object,
   fromVote: bool,
-  dispatch: func
+  dispatch: func,
+  colorScheme: string
 };
 
-export default wrap()(Settings);
+const mapStateToProps = state => ({
+  colorScheme: state.settings.get('colorScheme')
+});
+
+export default wrap(mapStateToProps)(Settings);
 
