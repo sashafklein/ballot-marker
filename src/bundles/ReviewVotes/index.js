@@ -65,6 +65,10 @@ export class ReviewVotes extends React.Component {
 
                 if (selectionList && selectionList.size > 0) {
                   const choices = contest.options.filter(opt => selectionList.includes(opt.index));
+                  const writeIn = selectionList.find(sel => typeof sel === 'string');
+                  if (writeIn) {
+                    choices.push({ name: writeIn });
+                  }
                   return (
                     <View key={ contest.id } style={ gbs.w.mv10 }>
                       { title }
