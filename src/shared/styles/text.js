@@ -37,12 +37,12 @@ export default {
 
   p: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(13)
+    fontSize: scaleText(12)
   },
 
   small: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(8)
+    fontSize: scaleText(7)
   },
 
   // Weight

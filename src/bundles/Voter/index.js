@@ -11,6 +11,7 @@ import VoterRow from './VoterRow';
 import { wrap } from '../../shared/wrap';
 import { setVote } from '../../store/actions';
 import { straightPartyVote } from '../../store/thunkActions';
+import { numberToWord } from '../../shared/utils/string';
 
 const rows = contest => {
   const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
@@ -110,7 +111,7 @@ export class Voter extends React.Component {
 
     const instructions = {
       BallotMeasureContest: 'Select Yes or No'
-    }[contest.get('type')] || `Select ${contest.get('voteLimit')}`;
+    }[contest.get('type')] || `Select ${numberToWord(contest.get('voteLimit'))} candidate`;
 
     const headerItems = [
       {
@@ -139,8 +140,8 @@ export class Voter extends React.Component {
         <ScrollView>
           <View style={ gbs.l.centeredContainer }>
             <View style={ gbs.l.h1 }>
-              <Text style={ [gbs.t.h4, gbs.l.p] }>{ contest.get('name') }</Text>
-              <Text style={ [gbs.t.p] }>{ instructions }</Text>
+              <Text style={ [gbs.t.h3, gbs.t.bold, { textAlign: 'center' }] }>{ contest.get('name') }</Text>
+              <Text style={ [gbs.t.p, { textAlign: 'center' }] }>{ instructions }</Text>
               {
                 contest.get('text') &&
                   <Text style={ [gbs.t.p, gbs.l.p] }>{ contest.get('text') }</Text>
