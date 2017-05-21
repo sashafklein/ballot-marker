@@ -17,32 +17,32 @@ export default {
   // Size
   h1: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(22)
+    fontSize: scaleText(20)
   },
 
   h2: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(20)
+    fontSize: scaleText(28)
   },
 
   h3: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(18)
+    fontSize: scaleText(16)
   },
 
   h4: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(16)
+    fontSize: scaleText(14)
   },
 
   p: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(14)
+    fontSize: scaleText(13)
   },
 
   small: {
     fontFamily: 'Avenir',
-    fontSize: scaleText(10)
+    fontSize: scaleText(8)
   },
 
   // Weight
