@@ -1,3 +1,3 @@
-rootProject.name = 'ballot-marker'
+rootProject.name = 'ballotMarker'
 
 include ':app'
