@@ -26,7 +26,7 @@ export const PageWithActions = props => {
       <ButtonBar
         items={ headerItems }
         textStyle={ [gbs.t.small, { alignSelf: 'center', textDecorationLine: 'none' }] }
-        style={ { top: gbs.l.navButtonOffset } }
+        style={ { top: gbs.l.navButtonOffset * 4 } }
       />
       <View style={ { height, width: gbs.s.percWidth100 - 20, marginLeft: gbs.l.navButtonOffset, marginTop: barCount === 2 ? gbs.l.buttonHeight : 0 } }>
         { children }
@@ -34,7 +34,7 @@ export const PageWithActions = props => {
       <ButtonBar
         items={ footerItems }
         textStyle={ [gbs.t.p, { alignSelf: 'center', textDecorationLine: 'none' }] }
-        style={ { bottom: gbs.l.navButtonOffset } }
+        style={ { bottom: gbs.l.navButtonOffset * 2 } }
       />
     </View>
   );

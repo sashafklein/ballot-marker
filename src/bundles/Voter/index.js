@@ -43,7 +43,7 @@ export class Voter extends React.Component {
     return selections.size >= contest.get('voteLimit')
       && (
         typeof entry === 'string'
-          ? !(typeof selections.find(sel => typeof sel === 'string') === 'string')
+          ? !selections.find(sel => typeof sel === 'string') // updating write-in
           : !selections.includes(entry)
       );
   }
@@ -57,7 +57,7 @@ export class Voter extends React.Component {
     Actions.oops({ messages });
   }
 
-  handleSelection(index) {
+  handleSelection(index, callback) {
     const { selections, contest, dispatch } = this.props;
 
     if (this.pushesAboveLimit(index)) {
@@ -70,6 +70,7 @@ export class Voter extends React.Component {
         : selections.delete(priorIndex); // Remove the item index (at priorIndex)
 
       dispatch(setVote(contest.get('id'), nextSelections));
+      if (callback) { callback(); }
     }
   }
 
@@ -80,22 +81,29 @@ export class Voter extends React.Component {
       this.raiseAboveLimitError();
     } else {
       const priorIndex = selections.findIndex(sel => typeof sel === 'string');
-      const nextSelections = priorIndex === -1
-        ? selections.push(text) // Add the write-in text
-        : selections.set(priorIndex, text); // Update the write-in text
-      dispatch(setVote(contest.get('id'), nextSelections));
+      const value = text.length > 0 ? text : null;
+
+      if (value) {
+        const nextSelections = priorIndex === -1
+          ? selections.push(value) // Add the write-in text
+          : selections.set(priorIndex, value); // Update the write-in text
+        dispatch(setVote(contest.get('id'), nextSelections));
+      } else {
+        const nextSelections = selections.filter(sel => typeof sel !== 'string');
+        dispatch(setVote(contest.get('id'), nextSelections));
+      }
     }
   }
 
-  render() {
-    const { gbs, contest, selections, dispatch, contestIndex } = this.props;
-
+  optContent(opt) {
+    const { selections, dispatch, contest, gbs } = this.props;
     const optionMapper = {
       PartyContest: option => ({
         title: option.name,
         onValueChange: newVal => {
-          this.handleSelection(option.index);
-          dispatch(straightPartyVote(option.id, newVal));
+          this.handleSelection(option.index, () => {
+            dispatch(straightPartyVote(option.id, newVal));
+          });
         }
       }),
       CandidateContest: option => ({
@@ -108,6 +116,37 @@ export class Voter extends React.Component {
         onValueChange: () => this.handleSelection(option.index)
       })
     }[contest.get('type')];
+
+    if (opt === 'write-in') {
+      return (
+        <TextInput
+          onChangeText={ t => { this.handleWritein(t); } }
+          style={ [
+            gbs.t.p,
+            { fontFamily: 'Avenir', borderColor: gbs.c.flat, borderWidth: 1, padding: 10, minHeight: gbs.l.buttonHeight, marginHorizontal: gbs.s.percWidth5 }
+          ] }
+          onFocus={ () => {
+            if (this.pushesAboveLimit('text')) {
+              this.raiseAboveLimitError();
+            }
+          }}
+          multiline
+          defaultValue="Touch here to write in another candidate"
+          value={ selections.find(sel => typeof sel === 'string') }
+        />
+      );
+    } else {
+      return (
+        <VoterRow
+          selected={ selections.includes(opt.index) }
+          { ...optionMapper(opt) }
+        />
+      );
+    }
+  }
+
+  render() {
+    const { gbs, contest, contestIndex } = this.props;
 
     const instructions = {
       BallotMeasureContest: 'Select Yes or No'
@@ -137,8 +176,8 @@ export class Voter extends React.Component {
         onNext={ () => Actions.voter({ contestIndex: contestIndex + 1 }) }
         headerItems={ headerItems }
       >
-        <ScrollView>
-          <View style={ [gbs.l.centeredContainer, { marginTop: gbs.l.buttonHeight }] }>
+        <ScrollView style={ { backgroundColor: gbs.c.bg, top: gbs.l.buttonHeight, paddingTop: 10 } }>
+          <View style={ [{ minHeight: contest.get('options').size * (gbs.l.buttonHeight + 2) }] }>
             <View style={ gbs.l.h1 }>
               <Text style={ [gbs.t.h3, gbs.t.bold, { textAlign: 'center' }] }>{ contest.get('name') }</Text>
               <Text style={ [gbs.t.p, { textAlign: 'center' }] }>{ instructions }</Text>
@@ -148,41 +187,11 @@ export class Voter extends React.Component {
               }
             </View>
             <ListView
-              style={ { flex: 1, flexDirection: 'column' }}
+              style={ { flex: 1, flexDirection: 'column' } }
               dataSource={ this.state.dataSource }
-              renderRow={ opt => {
-                if (opt === 'write-in') {
-                  return (
-                    <TextInput
-                      onChangeText={ t => { this.handleWritein(t); } }
-                      style={ [
-                        gbs.t.p,
-                        { fontFamily: 'Avenir', minHeight: 40, borderColor: gbs.c.flat, borderWidth: 1 },
-                        { marginBottom: opt.isLast
-                          ? gbs.l.buttonHeight
-                          : 0
-                        }
-                      ] }
-                      onFocus={ () => {
-                        if (this.pushesAboveLimit('text')) {
-                          this.raiseAboveLimitError();
-                        }
-                      }}
-                      multiline
-                      defaultValue="Touch here to write in another candidate"
-                      value={ this.state.writeIn }
-                    />
-                  );
-                } else {
-                  return (
-                    <VoterRow
-                      selected={ selections.includes(opt.index) }
-                      { ...optionMapper(opt) }
-                    />
-                  );
-                }
-              } }
+              renderRow={ opt => this.optContent(opt) }
             />
+            <View style={ { marginBottom: gbs.l.buttonHeight * 4 } } />
           </View>
         </ScrollView>
       </PageWithActions>
