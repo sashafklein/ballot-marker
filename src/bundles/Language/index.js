@@ -11,7 +11,7 @@ import { wrap } from '../../shared/wrap';
 export const Language = ({ gbs }) => {
   return (
     <PageWithActions onBack={ Actions.pop } onNext={ Actions.settings }>
-      <View style={ [gbs.l.centeredContainer] }>
+      <View style={ [gbs.l.centeredContainer, { marginTop: gbs.s.percHeight10 }] }>
         <Text style={ gbs.t.p }>Set your language:</Text>
         <View style={ gbs.w.m10 } >
           <LanguageList />

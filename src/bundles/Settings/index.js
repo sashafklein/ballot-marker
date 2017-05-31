@@ -21,16 +21,18 @@ export const Settings = ({ gbs, fromVote, dispatch, colorScheme }) => {
     >
       <ScrollView>
         <View style={ gbs.l.centeredContainer }>
-          <Text style={ [gbs.t.p, gbs.l.p]}>Choose text size:</Text>
+          <Text style={ [gbs.t.p, gbs.t.bold, gbs.l.p, { textAlign: 'center' }] }>
+            Choose text size:
+          </Text>
           {
             ['small', 'medium', 'large'].map((size, i) => (
               <TextSizeButton size={ size } key={ i } />
             ))
           }
         </View>
-        <View>
-          <Text style={ [gbs.t.p, gbs.t.bold, gbs.l.p] }>
-            Choose color scheme (functionality pending):
+        <View style={ { marginBottom: gbs.s.percHeight10, marginTop: 10 } }>
+          <Text style={ [gbs.t.p, gbs.t.bold, gbs.l.p, { textAlign: 'center' }] }>
+            Choose color scheme (pending):
           </Text>
           {
             colorSchemes.map((scheme, index) => (
@@ -40,6 +42,7 @@ export const Settings = ({ gbs, fromVote, dispatch, colorScheme }) => {
                   button: [
                     gbs.l.button,
                     {
+                      width: gbs.s.percWidth70,
                       backgroundColor: _.camelCase(scheme) === colorScheme
                         ? gbs.c.buttonBg
                         : gbs.c.flat

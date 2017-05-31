@@ -21,11 +21,12 @@ export const Instructions = ({ gbs, showNext }) => {
       headerItems={ headerItems }
       next={ showNext ? 'Next' : null }
     >
-      <View style={ gbs.l.centeredContainer }>
+      <View style={ [gbs.l.centeredContainer, { marginTop: 15 }] }>
         <ScrollView>
           <TextManifest
+            textStyles={ { textAlign: 'center' } }
             textArray={ [
-              [{ h3: 'How to vote' }],
+              [{ h1: 'How to vote' }],
               [{ b: 'To vote for the candidate of your choice, ' }, { p: 'choose that person\'s name.' }],
               [{ b: 'If you want to change your vote or if you make a mistake' }, { p: 'uncheck the one you don\'t want. Then choose the one you do want' }],
               [{ b: 'To write in a candidate: To vote for a person who is not on the ballot, ' }, { p: 'choose "Write in a name"' }],

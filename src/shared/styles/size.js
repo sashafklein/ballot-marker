@@ -5,10 +5,11 @@ const screenDimensions = Dimensions.get('window');
 
 const size = {};
 
-_.range(0, 21).forEach(base => {
+_.range(0, 41).forEach(base => {
   ['Height', 'Width'].forEach(dimension => {
-    const amount = base * 5;
-    const key = `perc${dimension}${amount}`;
+    const amount = base * 2.5;
+    const stringAmount = amount.toString().replace('.', '_');
+    const key = `perc${dimension}${stringAmount}`;
     size[key] = screenDimensions[dimension.toLowerCase()] * (amount / 100.0);
   });
 });

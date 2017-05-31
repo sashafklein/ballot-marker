@@ -12,7 +12,7 @@ import { wrap } from '../../shared/wrap';
 export const Headset = ({ dispatch, screenOff, gbs }) => {
   return (
     <PageWithActions onNext={ Actions.language } onBack={ Actions.pop }>
-      <View style={ [gbs.l.centeredContainer] }>
+      <View style={ [gbs.l.centeredContainer, { marginTop: -(gbs.s.percHeight10) }] }>
         <Text style={ gbs.w.mb20 }>
           <Text style={ [gbs.t.p, gbs.t.bold] }>If you want to hear the ballot out loud, </Text>
           <Text style={ [gbs.t.p] }>plug in a headset.</Text>
@@ -21,12 +21,12 @@ export const Headset = ({ dispatch, screenOff, gbs }) => {
           For privacy while using the audio ballot, turn the screen off.
         </Text>
         <View
-          style={ [{ height: gbs.s.percHeight10, backgroundColor: gbs.c.buttonBg }, gbs.w.mv10] }
+          style={ [{ height: gbs.s.percHeight10, backgroundColor: gbs.c.buttonBg }, gbs.w.mv20] }
         >
           <Button
             onPress={ () => dispatch(changeSetting('screenOff', !screenOff)) }
             addStyles={ {
-              button: [gbs.l.button]
+              text: [gbs.l.buttonText]
             } }
           >
             { `Turn the screen ${screenOff ? 'on' : 'off'}` }

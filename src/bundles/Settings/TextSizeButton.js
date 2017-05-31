@@ -25,6 +25,7 @@ export const TextSizeButton = ({ size, textSize, dispatch, gbs }) => {
           gbs.l.button,
           {
             height: gbs.s.percHeight10,
+            width: gbs.s.percWidth70,
             backgroundColor: size === textSize
               ? gbs.c.buttonBg
               : gbs.c.flat,

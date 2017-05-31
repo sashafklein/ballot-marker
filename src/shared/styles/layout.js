@@ -10,9 +10,12 @@ export default {
     marginHorizontal: size.percWidth5
   },
   button: {
-    height: size.percHeight10,
-    width: size.percWidth70,
     marginVertical: 20
+  },
+  buttonHeight: size.percHeight10,
+  navButtonOffset: 10,
+  buttonText: {
+    paddingHorizontal: 20
   },
   p: {
     marginVertical: 10

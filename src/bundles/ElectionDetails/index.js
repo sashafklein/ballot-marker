@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { list } from 'react-immutable-proptypes';
 
 import PageWithActions from '../../shared/components/PageWithActions';
+import TextManifest from '../../shared/components/TextManifest';
 import { wrap } from '../../shared/wrap';
 
 import { isDateElement } from '../../shared/utils/date';
@@ -17,37 +18,20 @@ export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
       onNext={ () => { Actions.voter({ contestIndex: 0 }); } }
       next="Begin Voting"
     >
-      <View style={ gbs.l.centeredContainer }>
-        <ScrollView>
-          <View style={ gbs.w.mv10 }>
-            <Text style={ [gbs.t.h3] }>{ [city, area].join(', ') }</Text>
-          </View>
-          <View style={ gbs.w.mv10 }>
-            <Text style={ [gbs.t.p] }>This ballot is for</Text>
-          </View>
-
-          <View>
-            <Text style={ [gbs.t.p, gbs.t.bold] }>{ getTitle(type) }</Text>
-          </View>
-          <View>
-            <Text style={ [gbs.t.p, gbs.t.bold] }>{ date }</Text>
-          </View>
-          <View>
-            <Text style={ [gbs.t.p, gbs.t.bold] }>{ city }</Text>
-          </View>
-          <View>
-            <Text style={ [gbs.t.p, gbs.t.bold] }>{ [city, area].join(', ') }</Text>
-          </View>
-
-          {
-            contests.map((contest, index) => (
-              <View key={ index }>
-                <Text key={ index } style={ [gbs.t.p, gbs.t.bold] }>{ contest.get('Name') }</Text>
-              </View>
-            ))
-          }
-        </ScrollView>
-      </View>
+      <ScrollView>
+        <TextManifest
+          styles={ [gbs.l.centeredContainer, { marginTop: gbs.s.percHeight20 }] }
+          textStyles={ { textAlign: 'center' } }
+          textArray={ [
+            [{ h1: [city, area].join(', ') }],
+            [{ p: 'This ballot is for:' }],
+            [{ b: getTitle(type) }],
+            [{ b: date }],
+            [{ b: city }],
+            [{ b: [city, area].join(', ') }]
+          ]}
+        />
+      </ScrollView>
     </PageWithActions>
   );
 };

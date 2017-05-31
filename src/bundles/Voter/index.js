@@ -15,7 +15,7 @@ import { numberToWord } from '../../shared/utils/string';
 
 const rows = contest => {
   const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
-  const rowArray = contest.get('options').toJS();
+  const rowArray = contest.get('options').toJS().map((opt, index) => Object.assign({}, opt, { isLast: index === contest.size - 1 }));
   if (contest.get('type') === 'CandidateContest') {
     rowArray.push('write-in');
   }
@@ -138,7 +138,7 @@ export class Voter extends React.Component {
         headerItems={ headerItems }
       >
         <ScrollView>
-          <View style={ gbs.l.centeredContainer }>
+          <View style={ [gbs.l.centeredContainer, { marginTop: gbs.l.buttonHeight }] }>
             <View style={ gbs.l.h1 }>
               <Text style={ [gbs.t.h3, gbs.t.bold, { textAlign: 'center' }] }>{ contest.get('name') }</Text>
               <Text style={ [gbs.t.p, { textAlign: 'center' }] }>{ instructions }</Text>
@@ -155,7 +155,14 @@ export class Voter extends React.Component {
                   return (
                     <TextInput
                       onChangeText={ t => { this.handleWritein(t); } }
-                      style={ [gbs.t.p, { fontFamily: 'Avenir', minHeight: 40, borderColor: gbs.c.flat, borderWidth: 1 }] }
+                      style={ [
+                        gbs.t.p,
+                        { fontFamily: 'Avenir', minHeight: 40, borderColor: gbs.c.flat, borderWidth: 1 },
+                        { marginBottom: opt.isLast
+                          ? gbs.l.buttonHeight
+                          : 0
+                        }
+                      ] }
                       onFocus={ () => {
                         if (this.pushesAboveLimit('text')) {
                           this.raiseAboveLimitError();

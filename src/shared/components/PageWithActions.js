@@ -12,25 +12,30 @@ export const PageWithActions = props => {
 
   const headerExists = headerItems && headerItems.length > 0;
   const footerExists = footerItems && footerItems.length > 0;
-  const headerHeight = headerExists ? gbs.s.percHeight10 : 0;
 
-  const footerHeight = footerExists ? gbs.s.percHeight10 : 0;
+  const barCount = [headerExists, footerExists].filter(Boolean).length;
 
-  const viewStyles = {
-    height: gbs.s.percHeight100 - headerHeight - footerHeight
-  };
+  const height = [
+    gbs.s.percHeight100,
+    gbs.s.percHeight100,
+    gbs.s.percHeight100
+  ][barCount];
 
   return (
     <View style={{ backgroundColor: gbs.c.bg }}>
       <ButtonBar
         items={ headerItems }
         textStyle={ [gbs.t.small, { alignSelf: 'center', textDecorationLine: 'none' }] }
+        style={ { top: gbs.l.navButtonOffset } }
       />
-      <View style={ viewStyles }>
-        <View style={{ height: 10 }} />
+      <View style={ { height, width: gbs.s.percWidth100 - 20, marginLeft: gbs.l.navButtonOffset, marginTop: barCount === 2 ? gbs.l.buttonHeight : 0 } }>
         { children }
       </View>
-      <ButtonBar items={ footerItems } />
+      <ButtonBar
+        items={ footerItems }
+        textStyle={ [gbs.t.p, { alignSelf: 'center', textDecorationLine: 'none' }] }
+        style={ { bottom: gbs.l.navButtonOffset } }
+      />
     </View>
   );
 };
