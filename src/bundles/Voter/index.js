@@ -97,6 +97,7 @@ export class Voter extends React.Component {
 
   optContent(opt) {
     const { selections, dispatch, contest, gbs } = this.props;
+    const { focused } = this.state;
     const optionMapper = {
       PartyContest: option => ({
         title: option.name,
@@ -117,22 +118,39 @@ export class Voter extends React.Component {
       })
     }[contest.get('type')];
 
+    const textDefault = 'Touch here to write in another candidate';
+    const textVal = selections.find(sel => typeof sel === 'string');
+    const textToDisplayOnBlur = textVal && textVal.length
+      ? textVal
+      : textDefault;
+
     if (opt === 'write-in') {
       return (
         <TextInput
           onChangeText={ t => { this.handleWritein(t); } }
           style={ [
             gbs.t.p,
-            { fontFamily: 'Avenir', borderColor: gbs.c.flat, borderWidth: 1, padding: 10, minHeight: gbs.l.buttonHeight, marginHorizontal: gbs.s.percWidth5 }
+            {
+              fontFamily: 'Avenir',
+              borderColor: gbs.c.flat,
+              borderWidth: 1,
+              paddingHorizontal: 10,
+              lineHeight: gbs.l.buttonHeight / 2,
+              minHeight: gbs.l.buttonHeight,
+              marginHorizontal: gbs.s.percWidth5,
+            }
           ] }
           onFocus={ () => {
+            this.setState({ focused: true });
             if (this.pushesAboveLimit('text')) {
               this.raiseAboveLimitError();
             }
           }}
+          onBlur={ () => {
+            this.setState({ focused: false });
+          } }
           multiline
-          defaultValue="Touch here to write in another candidate"
-          value={ selections.find(sel => typeof sel === 'string') }
+          value={ focused ? textVal : textToDisplayOnBlur }
         />
       );
     } else {
