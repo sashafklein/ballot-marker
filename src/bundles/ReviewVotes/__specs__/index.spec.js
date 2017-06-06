@@ -1,6 +1,6 @@
 /* eslint no-undef:0, no-unused-expressions:0 */
 
-import { Map, List } from 'immutable';
+import { fromJS } from 'immutable';
 import { ListView } from 'react-native';
 
 import { ReviewVotes } from '../';
@@ -9,11 +9,11 @@ import PageWithActions from '../../../shared/components/PageWithActions';
 describe('<ReviewVotes />', () => {
   it('has a test', () => {
     const comp = mockComp(ReviewVotes, {
-      contests: List([
+      contests: fromJS([
         { id: 'one', name: 'Here is a name' },
         { id: 'two', name: 'Here is another' }
       ]),
-      selections: Map({})
+      selections: fromJS({})
     });
 
     const page = comp.find(PageWithActions).get(0);

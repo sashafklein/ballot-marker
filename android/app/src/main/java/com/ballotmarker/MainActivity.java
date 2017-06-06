@@ -1,4 +1,4 @@
-package com.ballotMarker;
+package com.ballotmarker;
 
 import com.facebook.react.ReactActivity;
 

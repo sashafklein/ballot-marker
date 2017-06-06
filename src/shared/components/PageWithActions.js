@@ -10,27 +10,23 @@ export const PageWithActions = props => {
   if (back) { footerItems.push({ onPress: onBack, content: back, colorKey: 'negative' }); }
   if (next) { footerItems.push({ onPress: onNext, content: next, colorKey: 'positive' }); }
 
-  const headerExists = headerItems && headerItems.length > 0;
-  const footerExists = footerItems && footerItems.length > 0;
-  const headerHeight = headerExists ? gbs.s.percHeight10 : 0;
-
-  const footerHeight = footerExists ? gbs.s.percHeight10 : 0;
-
-  const viewStyles = {
-    height: gbs.s.percHeight100 - headerHeight - footerHeight
-  };
+  const height = gbs.s.percHeight100;
 
   return (
-    <View style={{ backgroundColor: gbs.c.bg }}>
+    <View style={{ backgroundColor: gbs.c.bg, flex: 1 }}>
+      <View style={ { height, width: gbs.s.percWidth100, paddingHorizontal: gbs.l.navButtonOffset } }>
+        { children }
+      </View>
       <ButtonBar
         items={ headerItems }
         textStyle={ [gbs.t.small, { alignSelf: 'center', textDecorationLine: 'none' }] }
+        style={ { top: 0 } }
       />
-      <View style={ viewStyles }>
-        <View style={{ height: 10 }} />
-        { children }
-      </View>
-      <ButtonBar items={ footerItems } />
+      <ButtonBar
+        items={ footerItems }
+        textStyle={ [gbs.t.p, { alignSelf: 'center', textDecorationLine: 'none' }] }
+        style={ { bottom: 0, paddingBottom: gbs.l.navButtonOffset } }
+      />
     </View>
   );
 };

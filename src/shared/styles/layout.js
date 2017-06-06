@@ -2,6 +2,7 @@ import size from './size';
 
 const capitalize = string => string.slice(0, 1).toUpperCase() + string.slice(1).toLowerCase();
 
+const buttonHeight = size.percHeight10;
 export default {
   centeredContainer: {
     flex: 1,
@@ -10,9 +11,15 @@ export default {
     marginHorizontal: size.percWidth5
   },
   button: {
-    height: size.percHeight10,
-    width: size.percWidth70,
     marginVertical: 20
+  },
+  buttonHeight,
+  navButtonOffset: 5,
+  buttonText: {
+    paddingHorizontal: 20
+  },
+  scrollWithButtons: {
+    paddingTop: buttonHeight + size.percHeight7_5
   },
   p: {
     marginVertical: 10

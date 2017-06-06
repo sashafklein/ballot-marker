@@ -1,5 +1,5 @@
 {
-  "name": "ballot-marker",
+  "name": "ballotMarker",
   "version": "2.0.0",
   "description": "Ballot marking tool.",
   "repository": {
@@ -17,7 +17,9 @@
     "test:watch": "mocha -w --opts test/mocha.opts --require react-native-mock/mock 'src/**/__specs__/*.spec.js'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "ios": "react-native run-ios --simulator 'iPad Pro (9.7 inch)'"
+    "ios": "react-native run-ios --simulator 'iPad Pro (9.7 inch)'",
+    "clean:babelrc": "find ./node_modules -name react-packager -prune -o -name '.babelrc' -print | xargs rm -f",
+    "postinstall": "npm run clean:babelrc"
   },
   "engines": {
     "node": ">=6",

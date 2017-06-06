@@ -8,11 +8,8 @@ export const NavButton = ({ onPress, content, colorKey, gbs, textStyle, buttonSt
     addStyles={ {
       button: [
         {
-          height: gbs.s.percHeight10 - 10,
-          alignSelf: 'center',
           justifyContent: 'center',
-          flex: 1,
-          marginVertical: 5
+          flex: 1
         },
         { backgroundColor: gbs.c[colorKey] },
         onPress ? {} : { backgroundColor: gbs.c.flat },
@@ -21,7 +18,7 @@ export const NavButton = ({ onPress, content, colorKey, gbs, textStyle, buttonSt
       text: [textStyle]
     } }
   >
-    { content }
+    { content.toUpperCase() }
   </Button>
 );
 

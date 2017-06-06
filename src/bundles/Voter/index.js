@@ -11,10 +11,11 @@ import VoterRow from './VoterRow';
 import { wrap } from '../../shared/wrap';
 import { setVote } from '../../store/actions';
 import { straightPartyVote } from '../../store/thunkActions';
+import { numberToWord } from '../../shared/utils/string';
 
 const rows = contest => {
   const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
-  const rowArray = contest.get('options').toJS();
+  const rowArray = contest.get('options').toJS().map((opt, index) => Object.assign({}, opt, { isLast: index === contest.size - 1 }));
   if (contest.get('type') === 'CandidateContest') {
     rowArray.push('write-in');
   }
@@ -42,7 +43,7 @@ export class Voter extends React.Component {
     return selections.size >= contest.get('voteLimit')
       && (
         typeof entry === 'string'
-          ? !(typeof selections.find(sel => typeof sel === 'string') === 'string')
+          ? !selections.find(sel => typeof sel === 'string') // updating write-in
           : !selections.includes(entry)
       );
   }
@@ -56,7 +57,7 @@ export class Voter extends React.Component {
     Actions.oops({ messages });
   }
 
-  handleSelection(index) {
+  handleSelection(index, callback) {
     const { selections, contest, dispatch } = this.props;
 
     if (this.pushesAboveLimit(index)) {
@@ -69,6 +70,7 @@ export class Voter extends React.Component {
         : selections.delete(priorIndex); // Remove the item index (at priorIndex)
 
       dispatch(setVote(contest.get('id'), nextSelections));
+      if (callback) { callback(); }
     }
   }
 
@@ -79,22 +81,30 @@ export class Voter extends React.Component {
       this.raiseAboveLimitError();
     } else {
       const priorIndex = selections.findIndex(sel => typeof sel === 'string');
-      const nextSelections = priorIndex === -1
-        ? selections.push(text) // Add the write-in text
-        : selections.set(priorIndex, text); // Update the write-in text
-      dispatch(setVote(contest.get('id'), nextSelections));
+      const value = text.length > 0 ? text : null;
+
+      if (value) {
+        const nextSelections = priorIndex === -1
+          ? selections.push(value) // Add the write-in text
+          : selections.set(priorIndex, value); // Update the write-in text
+        dispatch(setVote(contest.get('id'), nextSelections));
+      } else {
+        const nextSelections = selections.filter(sel => typeof sel !== 'string');
+        dispatch(setVote(contest.get('id'), nextSelections));
+      }
     }
   }
 
-  render() {
-    const { gbs, contest, selections, dispatch, contestIndex } = this.props;
-
+  optContent(opt) {
+    const { selections, dispatch, contest, gbs } = this.props;
+    const { focused } = this.state;
     const optionMapper = {
       PartyContest: option => ({
         title: option.name,
         onValueChange: newVal => {
-          this.handleSelection(option.index);
-          dispatch(straightPartyVote(option.id, newVal));
+          this.handleSelection(option.index, () => {
+            dispatch(straightPartyVote(option.id, newVal));
+          });
         }
       }),
       CandidateContest: option => ({
@@ -108,9 +118,57 @@ export class Voter extends React.Component {
       })
     }[contest.get('type')];
 
+    const textDefault = 'Touch here to write in another candidate';
+    const textVal = selections.find(sel => typeof sel === 'string');
+    const textToDisplayOnBlur = textVal && textVal.length
+      ? textVal
+      : textDefault;
+
+    if (opt === 'write-in') {
+      return (
+        <TextInput
+          onChangeText={ t => { this.handleWritein(t); } }
+          style={ [
+            gbs.t.p,
+            {
+              fontFamily: 'Avenir',
+              borderColor: gbs.c.flat,
+              borderWidth: 1,
+              paddingHorizontal: 10,
+              lineHeight: gbs.l.buttonHeight / 2,
+              minHeight: gbs.l.buttonHeight,
+              marginHorizontal: gbs.s.percWidth5,
+            }
+          ] }
+          onFocus={ () => {
+            this.setState({ focused: true });
+            if (this.pushesAboveLimit('text')) {
+              this.raiseAboveLimitError();
+            }
+          }}
+          onBlur={ () => {
+            this.setState({ focused: false });
+          } }
+          multiline
+          value={ focused ? textVal : textToDisplayOnBlur }
+        />
+      );
+    } else {
+      return (
+        <VoterRow
+          selected={ selections.includes(opt.index) }
+          { ...optionMapper(opt) }
+        />
+      );
+    }
+  }
+
+  render() {
+    const { gbs, contest, contestIndex } = this.props;
+
     const instructions = {
       BallotMeasureContest: 'Select Yes or No'
-    }[contest.get('type')] || `Select ${contest.get('voteLimit')}`;
+    }[contest.get('type')] || `Select ${numberToWord(contest.get('voteLimit'))} candidate`;
 
     const headerItems = [
       {
@@ -136,45 +194,22 @@ export class Voter extends React.Component {
         onNext={ () => Actions.voter({ contestIndex: contestIndex + 1 }) }
         headerItems={ headerItems }
       >
-        <ScrollView>
-          <View style={ gbs.l.centeredContainer }>
+        <ScrollView style={ { backgroundColor: gbs.c.bg, top: gbs.l.buttonHeight, paddingTop: 20 } }>
+          <View style={ [{ minHeight: contest.get('options').size * (gbs.l.buttonHeight + 2) }] }>
             <View style={ gbs.l.h1 }>
-              <Text style={ [gbs.t.h4, gbs.l.p] }>{ contest.get('name') }</Text>
-              <Text style={ [gbs.t.p] }>{ instructions }</Text>
+              <Text style={ [gbs.t.h3, gbs.t.bold, { textAlign: 'center' }] }>{ contest.get('name') }</Text>
+              <Text style={ [gbs.t.p, { textAlign: 'center' }] }>{ instructions }</Text>
               {
                 contest.get('text') &&
                   <Text style={ [gbs.t.p, gbs.l.p] }>{ contest.get('text') }</Text>
               }
             </View>
             <ListView
-              style={ { flex: 1, flexDirection: 'column' }}
+              style={ { flex: 1, flexDirection: 'column' } }
               dataSource={ this.state.dataSource }
-              renderRow={ opt => {
-                if (opt === 'write-in') {
-                  return (
-                    <TextInput
-                      onChangeText={ t => { this.handleWritein(t); } }
-                      style={ [gbs.t.p, { fontFamily: 'Avenir', minHeight: 40, borderColor: gbs.c.flat, borderWidth: 1 }] }
-                      onFocus={ () => {
-                        if (this.pushesAboveLimit('text')) {
-                          this.raiseAboveLimitError();
-                        }
-                      }}
-                      multiline
-                      defaultValue="Touch here to write in another candidate"
-                      value={ this.state.writeIn }
-                    />
-                  );
-                } else {
-                  return (
-                    <VoterRow
-                      selected={ selections.includes(opt.index) }
-                      { ...optionMapper(opt) }
-                    />
-                  );
-                }
-              } }
+              renderRow={ opt => this.optContent(opt) }
             />
+            <View style={ { marginBottom: gbs.l.buttonHeight * 4 } } />
           </View>
         </ScrollView>
       </PageWithActions>

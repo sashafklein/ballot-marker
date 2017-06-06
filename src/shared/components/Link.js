@@ -14,16 +14,18 @@ export const Link = ({ onPress, children, addStyles, replaceStyles, activeOpacit
       textDecorationColor: gbs.c.buttonText,
       color: gbs.c.buttonText,
       alignSelf: 'center',
+      justifyContent: 'center'
     },
     link: {
       flex: 1,
       alignSelf: 'center',
-      flexDirection: 'column',
+      flexDirection: 'row',
       justifyContent: 'center'
     }
   };
 
   const combiner = styleCombiner(styles, addStyles, replaceStyles);
+
   return (
     <TouchableOpacity
       onPress={ onPress }

@@ -12,16 +12,26 @@ export const Button = ({ onPress, children, replaceStyles, addStyles, gbs }) => 
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      height: gbs.s.percHeight10,
-      borderRadius: 10,
-    }, gbs.l.border(2, gbs.c.buttonBorder)],
+      borderRadius: 2,
+      shadowColor: '#000000',
+      height: gbs.l.buttonHeight,
+      shadowOpacity: 0.8,
+      shadowRadius: 1,
+      shadowOffset: {
+        height: 1,
+        width: 0
+      },
+      flex: 1,
+    }],
     text: {
       color: gbs.c.buttonText,
       alignSelf: 'center',
       fontSize: gbs.t.h3.fontSize,
       textDecorationLine: 'none',
       fontFamily: 'Avenir',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      textAlign: 'center',
+      justifyContent: 'center'
     }
   };
 
@@ -55,6 +65,6 @@ Button.defaultProps = {
   addStyles: {}
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = s => ({ settings: s.settings });
 
 export default wrap(mapStateToProps)(Button);

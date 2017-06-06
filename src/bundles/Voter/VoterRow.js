@@ -22,10 +22,11 @@ export const VoterRow = ({ title, subtitle, selected, onValueChange, gbs }) => {
     <View
       style={ [
         gbs.w.mv5,
-        { marginHorizontal: gbs.percWidth5, height: gbs.s.percHeight10, flexDirection: 'row', width: gbs.s.percWidth90, flex: 1 }
+        { marginHorizontal: gbs.s.percWidth5, height: gbs.s.percHeight10, flexDirection: 'row', width: gbs.s.percWidth90, flex: 1 },
+        { justifyContent: 'center' }
       ] }
     >
-      <View style={{ width: gbs.s.percWidth70, flex: 7, height: gbs.s.percHeight10 }}>
+      <View style={{ width: gbs.s.percWidth65, flex: 7, height: gbs.s.percHeight10 }}>
         <View style={ { flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' } }>
           <Text
             style={ [
@@ -39,7 +40,7 @@ export const VoterRow = ({ title, subtitle, selected, onValueChange, gbs }) => {
           { subtitleComponent }
         </View>
       </View>
-      <View style={ { width: gbs.s.percWidth20, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', alignItems: 'center', height: gbs.l.percHeight10, flex: 2 } }>
+      <View style={ { width: gbs.s.percWidth25, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', alignItems: 'center', height: gbs.l.percHeight10, flex: 2, marginRight: gbs.s.percWidth5 } }>
         <View style={{ alignSelf: 'center' }}>
           <Switch
             value={ selected }
