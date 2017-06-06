@@ -14,8 +14,7 @@ export class ReviewVotes extends React.Component {
 
     this.state = {
       dataSource: ds.cloneWithRows(props.contests
-        .filter(c => c.type !== 'PartyContest')
-        .filter(c => c.get('name') !== 'Straight Party')
+        .filter(c => c.get('type') !== 'PartyContest')
         .toJS()
       )
     };
