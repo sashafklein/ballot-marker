@@ -10,31 +10,22 @@ export const PageWithActions = props => {
   if (back) { footerItems.push({ onPress: onBack, content: back, colorKey: 'negative' }); }
   if (next) { footerItems.push({ onPress: onNext, content: next, colorKey: 'positive' }); }
 
-  const headerExists = headerItems && headerItems.length > 0;
-  const footerExists = footerItems && footerItems.length > 0;
-
-  const barCount = [headerExists, footerExists].filter(Boolean).length;
-
-  const height = [
-    gbs.s.percHeight100,
-    gbs.s.percHeight100,
-    gbs.s.percHeight100
-  ][barCount];
+  const height = gbs.s.percHeight100;
 
   return (
-    <View style={{ backgroundColor: gbs.c.bg }}>
-      <ButtonBar
-        items={ headerItems }
-        textStyle={ [gbs.t.small, { alignSelf: 'center', textDecorationLine: 'none' }] }
-        style={ { top: gbs.l.navButtonOffset * 2 } }
-      />
-      <View style={ { height, width: gbs.s.percWidth100 - 20, marginLeft: gbs.l.navButtonOffset, marginTop: barCount === 2 ? gbs.l.buttonHeight : 0 } }>
+    <View style={{ backgroundColor: gbs.c.bg, flex: 1 }}>
+      <View style={ { height, width: gbs.s.percWidth100, paddingHorizontal: gbs.l.navButtonOffset } }>
         { children }
       </View>
       <ButtonBar
+        items={ headerItems }
+        textStyle={ [gbs.t.small, { alignSelf: 'center', textDecorationLine: 'none' }] }
+        style={ { top: 0 } }
+      />
+      <ButtonBar
         items={ footerItems }
         textStyle={ [gbs.t.p, { alignSelf: 'center', textDecorationLine: 'none' }] }
-        style={ { bottom: gbs.l.navButtonOffset * 2 } }
+        style={ { bottom: 0, paddingBottom: gbs.l.navButtonOffset } }
       />
     </View>
   );

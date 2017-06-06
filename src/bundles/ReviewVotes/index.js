@@ -13,7 +13,11 @@ export class ReviewVotes extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: () => (r1, r2) => r1 !== r2 });
 
     this.state = {
-      dataSource: ds.cloneWithRows(props.contests.filter(c => c.type !== 'PartyContest').toJS())
+      dataSource: ds.cloneWithRows(props.contests
+        .filter(c => c.type !== 'PartyContest')
+        .filter(c => c.get('name') !== 'Straight Party')
+        .toJS()
+      )
     };
   }
 
@@ -38,33 +42,35 @@ export class ReviewVotes extends React.Component {
         headerItems={ headerItems }
         next="Cast your vote"
       >
-        <ScrollView>
+        <ScrollView style={ [{ backgroundColor: gbs.c.bg, }, gbs.l.scrollWithButtons] }>
           <View style={ gbs.l.centeredContainer }>
             <View style={ gbs.l.h1 }>
               <Text style={ [gbs.t.h4, gbs.t.bold] }>
                 { 'Review what you\'re voting for.' }
               </Text>
-              <Text style={ [gbs.t.p, gbs.t.bold] }>
+              <Text style={ [gbs.t.p, gbs.t.bold, gbs.w.mv10] }>
                 This screen shows everything you voted for.
               </Text>
               <Text style={ gbs.t.p }>
                 Review it carefully. If you are ready to cast your ballot, touch
+                <Text style={ [gbs.t.p, gbs.t.bold] }> Cast your vote.</Text>
               </Text>
-              <Text style={ [gbs.t.p, gbs.t.bold] }>Cast your vote</Text>
             </View>
+
             <ListView
-              style={ { flex: 1, flexDirection: 'column' }}
+              style={ { flex: 1, alignSelf: 'center' }}
               dataSource={ this.state.dataSource }
               renderRow={ contest => {
                 const selectionList = selections.get(contest.id);
                 const title = (
-                  <Text style={ [gbs.t.p, gbs.t.bold, gbs.w.mb5] }>
+                  <Text style={ [gbs.t.p, gbs.t.bold, gbs.w.mb5, gbs.w.mt15] }>
                     { contest.name }
                   </Text>
                 );
 
                 if (selectionList && selectionList.size > 0) {
                   const choices = contest.options.filter(opt => selectionList.includes(opt.index));
+
                   const writeIn = selectionList.find(sel => typeof sel === 'string');
                   if (writeIn) {
                     choices.push({ name: writeIn });
@@ -73,7 +79,7 @@ export class ReviewVotes extends React.Component {
                     <TouchableWithoutFeedback
                       onPress={ () => { Actions.voter({ contestIndex: contest.index }); }}
                     >
-                      <View key={ contest.id } style={ gbs.w.mv10 }>
+                      <View key={ contest.id } style={ [gbs.w.mv10] }>
                         { title }
                         {
                           choices.map((choice, index) => (
@@ -102,7 +108,7 @@ export class ReviewVotes extends React.Component {
                       <TouchableWithoutFeedback
                         onPress={ () => { Actions.voter({ contestIndex: contest.index }); }}
                       >
-                        <View style={ { backgroundColor: 'red' } }>
+                        <View style={ { backgroundColor: gbs.c.pink, padding: 5, marginTop: 5, marginBottom: 10 } }>
                           <Text style={ gbs.t.p }>
                             You did not vote for anyone. If you want to vote, touch here.
                           </Text>

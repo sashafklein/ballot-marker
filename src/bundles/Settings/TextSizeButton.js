@@ -22,9 +22,8 @@ export const TextSizeButton = ({ size, textSize, dispatch, gbs }) => {
           color: gbs.c.buttonText
         },
         button: [
-          gbs.l.button,
+          gbs.w.mv10,
           {
-            height: gbs.s.percHeight10,
             width: gbs.s.percWidth70,
             backgroundColor: size === textSize
               ? gbs.c.buttonBg

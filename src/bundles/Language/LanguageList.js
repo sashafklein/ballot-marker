@@ -36,7 +36,7 @@ export class LanguageList extends React.Component {
                   marginVertical: 20,
                   height: gbs.s.percHeight10,
                   marginBottom: rowData.name === languageData[languageData.length - 1].name
-                    ? gbs.l.buttonHeight
+                    ? gbs.l.buttonHeight + (2 * gbs.l.navButtonOffset)
                     : 0
                 }, rowData.name === 'English' && {
                   backgroundColor: gbs.c.positive

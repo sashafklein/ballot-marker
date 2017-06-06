@@ -12,14 +12,15 @@ export const ButtonBar = ({ items, gbs, style, textStyle }) => {
       <View
         style={ [
           {
-            height: gbs.s.percHeight7_5,
+            height: gbs.l.buttonHeight + (gbs.l.navButtonOffset),
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignSelf: 'center',
             position: 'absolute',
             width: barWidth,
-            marginLeft: gbs.l.navButtonOffset
+            marginLeft: gbs.l.navButtonOffset,
+            backgroundColor: 'rgba(255, 255, 255, 0.9)'
           },
           style
         ] }

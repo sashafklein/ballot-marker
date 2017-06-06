@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { list } from 'react-immutable-proptypes';
 
 import PageWithActions from '../../shared/components/PageWithActions';
 import TextManifest from '../../shared/components/TextManifest';
@@ -11,17 +10,16 @@ import { isDateElement } from '../../shared/utils/date';
 import { getTitle } from '../../shared/utils/election';
 
 // Export an unconnected version for testing
-export const ElectionDetails = ({ gbs, type, date, area, city, contests }) => {
+export const ElectionDetails = ({ gbs, type, date, area, city }) => {
   return (
     <PageWithActions
       onBack={ Actions.pop }
       onNext={ () => { Actions.voter({ contestIndex: 0 }); } }
       next="Begin Voting"
     >
-      <ScrollView>
+      <ScrollView style={ [gbs.l.scrollWithButtons] }>
         <TextManifest
-          styles={ [gbs.l.centeredContainer, { marginTop: gbs.s.percHeight20 }] }
-          textStyles={ { textAlign: 'center' } }
+          styles={ { alignItems: 'center' } }
           textArray={ [
             [{ h1: [city, area].join(', ') }],
             [{ p: 'This ballot is for:' }],
@@ -43,7 +41,6 @@ ElectionDetails.propTypes = {
   date: string,
   city: string,
   area: string,
-  contests: list
 };
 
 const mapStateToProps = state => ({
@@ -51,7 +48,6 @@ const mapStateToProps = state => ({
   date: state.metaData.get('fullTitle').split(' ').filter(el => isDateElement(el)).join(' '),
   city: state.metaData.get('city'),
   area: state.metaData.get('area'),
-  contests: state.contests
 });
 
 export default wrap(mapStateToProps)(ElectionDetails);

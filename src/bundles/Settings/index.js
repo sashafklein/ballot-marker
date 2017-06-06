@@ -40,7 +40,7 @@ export const Settings = ({ gbs, fromVote, dispatch, colorScheme }) => {
                 key={ index }
                 addStyles={ {
                   button: [
-                    gbs.l.button,
+                    gbs.w.mv10,
                     {
                       width: gbs.s.percWidth70,
                       backgroundColor: _.camelCase(scheme) === colorScheme

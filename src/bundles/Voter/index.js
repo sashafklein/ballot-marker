@@ -194,7 +194,7 @@ export class Voter extends React.Component {
         onNext={ () => Actions.voter({ contestIndex: contestIndex + 1 }) }
         headerItems={ headerItems }
       >
-        <ScrollView style={ { backgroundColor: gbs.c.bg, top: gbs.l.buttonHeight, paddingTop: 10 } }>
+        <ScrollView style={ { backgroundColor: gbs.c.bg, top: gbs.l.buttonHeight, paddingTop: 20 } }>
           <View style={ [{ minHeight: contest.get('options').size * (gbs.l.buttonHeight + 2) }] }>
             <View style={ gbs.l.h1 }>
               <Text style={ [gbs.t.h3, gbs.t.bold, { textAlign: 'center' }] }>{ contest.get('name') }</Text>

@@ -21,10 +21,10 @@ export const Instructions = ({ gbs, showNext }) => {
       headerItems={ headerItems }
       next={ showNext ? 'Next' : null }
     >
-      <View style={ [gbs.l.centeredContainer, { marginTop: 15 }] }>
-        <ScrollView>
+      <View>
+        <ScrollView style={ gbs.l.scrollWithButtons }>
           <TextManifest
-            textStyles={ { textAlign: 'center' } }
+            styles={ { marginHorizontal: gbs.s.percWidth2_5 }}
             textArray={ [
               [{ h1: 'How to vote' }],
               [{ b: 'To vote for the candidate of your choice, ' }, { p: 'choose that person\'s name.' }],

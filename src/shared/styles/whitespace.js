@@ -5,8 +5,9 @@ const whitespace = {};
 ['margin', 'padding'].forEach(type => {
   ['vertical', 'horizontal', 'left', 'right', 'top', 'bottom', ''].forEach(direction => {
     _.range(0, 20).forEach(base => {
-      const amount = base * 5;
-      const key = `${type.slice(0, 1)}${direction.slice(0, 1)}${amount}`;
+      const amount = base * 2.5;
+      const stringAmount = amount.toString().replace('.', '_');
+      const key = `${type.slice(0, 1)}${direction.slice(0, 1)}${stringAmount}`;
       const object = {
         [`${type}${direction.slice(0, 1).toUpperCase()}${direction.slice(1)}`]: amount
       };
